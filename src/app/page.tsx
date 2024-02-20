@@ -6,9 +6,9 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import AdminLoginForm from "@/components/projectComponents/Forms/AdminLoginForm";
 import UserLoginForm from "@/components/projectComponents/Forms/UserLoginForm";
 
-export default function page() {
+export default function Page() {
   return (
-    <main className="flex h-screen flex-col items-center justify-center sm:p-12  md:p-24">
+    <div className="flex h-screen flex-col items-center justify-center sm:p-12  md:p-24">
       <div className="p-1 border-0 w-auto flex items-center justify-center">
         <form action="#">
           <div className="mb-5 flex justify-between items-center">
@@ -34,6 +34,6 @@ export default function page() {
           </Tabs>
         </form>
       </div>
-    </main>
+    </div>
   );
 }

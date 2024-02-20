@@ -106,7 +106,7 @@ export const columns: ColumnDef<Employees>[] = [
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Date
+          Type
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -134,7 +134,7 @@ export const columns: ColumnDef<Employees>[] = [
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Type
+         Date
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -230,7 +230,7 @@ export function ExpenceTable() {
 
   return (
     <div className="w-full ">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Search Name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

@@ -7,6 +7,7 @@ import {
   DotsHorizontalIcon,
   PlusIcon,
 } from "@radix-ui/react-icons";
+const dayjs = require("dayjs");
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -43,81 +44,28 @@ import {
 import {ScrollArea} from "@/components/ui/scroll-area";
 
 import AddEmpForm from "../Forms/addEmpForm";
+import AddIncomeForm from "../Forms/addIncomeForm";
 
 const data: Employees[] = [
   {
     id: "m5gr84i9",
-    amount: 316,
-    name: "Sachin Pawar",
+    productName: "Mouse",
     empID: "RS-001",
-    roll: "head",
-    status: "present",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    name: "Sandeep Pawar",
-    empID: "RS-001",
-    roll: "head",
-    status: "absent",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    name: "Karan Pawar",
-    empID: "RS-001",
-    roll: "employee",
-    status: "onleave",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    name: "Manish Pawar",
-    empID: "RS-001",
-    roll: "manager",
-    status: "present",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    name: "Pankaj Pawar",
-    empID: "RS-001",
-    roll: "manager",
-    status: "present",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj5p",
-    amount: 821,
-    name: "Sataym Pawar",
-    empID: "RS-001",
-    roll: "manager",
-    status: "present",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj6p",
-    amount: 621,
-    name: "Aakash Pawar",
-    empID: "RS-001",
-    roll: "manager",
-    status: "present",
-    email: "carmella@hotmail.com",
+    mrp: 350,
+    rsPrice: 316,
+    status: "paid",
+    date: dayjs().format("DD MMM,YYYY")
   },
 ];
 
 export type Employees = {
   id: string;
-  name: string;
+  productName: string;
   empID: string;
-  email: string;
-  roll: "employee" | "head" | "manager" | "new";
-  status: "present" | "absent" | "onleave";
-  amount: number;
+  mrp: number;
+  status: "paid" | "pending";
+  rsPrice: number;
+  date: Date;
 };
 
 export const columns: ColumnDef<Employees>[] = [
@@ -144,49 +92,51 @@ export const columns: ColumnDef<Employees>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: "productName",
     header: ({column}) => {
       return (
         <Button
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Name
+          Product Name
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({row}) => <div className="lowercase">{row.getValue("name")}</div>,
+    cell: ({row}) => (
+      <div className="capitalize">{row.getValue("productName")}</div>
+    ),
   },
 
+  
   {
-    accessorKey: "email",
+    accessorKey: "mrp",
     header: ({column}) => {
       return (
         <Button
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Email
+         M.R.P.
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({row}) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
+    cell: ({row}) => {
+      const rsPrice = parseFloat(row.getValue("mrp"));
 
-  {
-    accessorKey: "roll",
-    header: "Roll",
-    cell: ({row}) => <div className="capitalize">{row.getValue("roll")}</div>,
+      // Format the rsPrice as a dollar rsPrice
+      const formatted = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+      }).format(rsPrice);
+
+      return <div className="text-start font-medium">{formatted}</div>;
+    },
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({row}) => <div className="capitalize">{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "amount",
+    accessorKey: "rsPrice",
     header: ({column}) => {
       return (
         <Button
@@ -199,18 +149,27 @@ export const columns: ColumnDef<Employees>[] = [
       );
     },
     cell: ({row}) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const rsPrice = parseFloat(row.getValue("rsPrice"));
 
-      // Format the amount as a dollar amount
+      // Format the rsPrice as a dollar rsPrice
       const formatted = new Intl.NumberFormat("en-IN", {
         style: "currency",
         currency: "INR",
-      }).format(amount);
+      }).format(rsPrice);
 
       return <div className="text-start font-medium">{formatted}</div>;
     },
   },
-
+  {
+    accessorKey: "date",
+    header: "Status",
+    cell: ({row}) => <div className="capitalize">{row.getValue("date")}</div>,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({row}) => <div className="capitalize">{row.getValue("status")}</div>,
+  },
   {
     id: "actions",
     enableHiding: false,
@@ -271,7 +230,7 @@ export function IncomeTable() {
 
   return (
     <div className="w-full ">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Search Name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -281,7 +240,7 @@ export function IncomeTable() {
           className="max-w-sm"
         />
         <div className="ml-auto flex gap-5">
-          <AddEmpForm />
+          <AddIncomeForm />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="default" className="ml-auto">

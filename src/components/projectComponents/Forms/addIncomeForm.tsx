@@ -31,7 +31,7 @@ import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 
-export default function AddExpencForm({
+export default function AddIncomeForm({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [date, setDate] = React.useState<DateRange | undefined>({
@@ -42,28 +42,27 @@ export default function AddExpencForm({
     <Dialog>
       <DialogTrigger>
         <Button variant="default" className="ml-auto">
-          Add New Expencese <PlusIcon className="ml-2 h-4 w-4" />
+          Add New Income <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Expencese Details</DialogTitle>
+          <DialogTitle>Income Details</DialogTitle>
           <DialogDescription>
             <form action="#" className="mt-5">
               <div className="mb-5 gap-3 flex-col flex">
-                <Label>Type</Label>
-                <Input placeholder="Expencese Type" required />
+                <Label>Product Name</Label>
+                <Input placeholder="Name" required />
               </div>
 
               <div className="mb-5 gap-3 flex flex-col">
-                <Label>Discreption</Label>
-                <Input placeholder="Expencese Discreption" required />
+                <Label>MRP</Label>
+                <Input placeholder="00.0" required />
               </div>
               <div className="mb-5 gap-3 flex flex-col">
-                <Label>Amount</Label>
-                <Input type="number" placeholder="00.0" required />
+                <Label>RS Price</Label>
+                <Input placeholder="00.0" required />
               </div>
-
               {/* <div className="mb-5 gap-3 flex flex-col">
                 <Label>Select Date</Label>
                 <div className={cn("grid gap-2", className)}>

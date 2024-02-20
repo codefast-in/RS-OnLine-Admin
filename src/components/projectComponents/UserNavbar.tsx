@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import Link from "next/link";
 
@@ -23,36 +25,47 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "../ui/button";
 import {Input} from "@/components/ui/input";
 
+
 // self made components
 import SwichMode from "../swichMode";
 import Image from "next/image";
-import {AlignRightIcon, BellIcon, LayersIcon, TextAlignRightIcon} from "@radix-ui/react-icons";
+import {
+  AlignRightIcon,
+  BellIcon,
+  LayersIcon,
+  TextAlignRightIcon,
+} from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
 
 // Data
 const pagesLinks = [
   {label: "Dashboard", path: "user/"},
   {label: "Tasks", path: "user/tasks"},
   {label: "Notifications", path: "user/notifications"},
-
   {label: "Employees", path: "user/employees"},
   {label: "Accounts", path: "user/accounts"},
   {label: "Reports", path: "user/reports"},
   {label: "Settings", path: "user/settings"},
 ];
-const logo = require("../../assets/img/logo-icon.png");
+
+const darkLogo = require("../../assets/img/darklogo.png");
+const lightLogo = require("../../assets/img/lightlogo.png");
 
 export default function UserNavbar() {
+  const theme ="dark"
   return (
     <Card className="flex items-center justify-center py-5 sticky top-0 border-x-0 border-t-0 rounded-none ">
       <div className=" flex items-center justify-between gap-32 max-w-[90%] w-full ">
         <Link href="/user">
-          <Avatar>
-            <AvatarImage src="../../assets/img/logo-icon.png" />
-            <AvatarFallback className="font-mono">RS</AvatarFallback>
-          </Avatar>
+          <Image
+            height={100}
+            width={100}
+            src={theme =="dark"?darkLogo:lightLogo}
+            alt="RS Logo"
+            className="h-10 w-10"
+          />
         </Link>
 
-        {/* <Image height={100} width={100} src={logo} alt="RS"/> */}
         {/* <div>
           {pagesLinks.map((link, index) => (
             <Button key={index} asChild variant="ghost">
@@ -61,7 +74,9 @@ export default function UserNavbar() {
           ))}
         </div> */}
         <Sheet>
-          <SheetTrigger className="block md:hidden "><TextAlignRightIcon className="h-8 w-8"/></SheetTrigger>
+          <SheetTrigger className="block md:hidden ">
+            <TextAlignRightIcon className="h-8 w-8" />
+          </SheetTrigger>
           <SheetContent>
             <SheetHeader>
               <SheetTitle>Are you absolutely sure?</SheetTitle>

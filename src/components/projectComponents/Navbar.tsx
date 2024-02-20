@@ -14,11 +14,10 @@ import {Card} from "../ui/card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "../ui/button";
 import {Input} from "@/components/ui/input";
-
 // self made components
 import SwichMode from "../swichMode";
 import Image from "next/image";
-
+import { useTheme } from "next-themes";
 // Data
 const pagesLinks = [
   {label: "Dashboard", path: "admin/"},
@@ -31,16 +30,20 @@ const pagesLinks = [
   {label: "Settings", path: "admin/settings"},
 ];
 const logo = require("../../assets/img/logo-icon.png");
-
+const darkLogo = require("../../assets/img/darklogo.png");
+const lightLogo = require("../../assets/img/lightlogo.png");
 export default function Navbar() {
+  const theme = "dark"
   return (
     <Card className="flex items-center justify-center py-5 sticky top-0 border-x-0 border-t-0 rounded-none ">
       <div className=" flex items-center justify-around gap-32 max-w-[90%]">
-        <Avatar>
-          <AvatarImage src="../../assets/img/logo-icon.png" />
-          <AvatarFallback className="font-mono">RS</AvatarFallback>
-        </Avatar>
-        {/* <Image height={100} width={100} src={logo} alt="RS"/> */}
+        <Image
+          height={100}
+          width={100}
+          src={theme == "dark" ? darkLogo : lightLogo}
+          alt="RS Logo"
+          className="h-10 w-10"
+        />
         <div>
           {pagesLinks.map((link, index) => (
             <Button key={index} asChild variant="ghost" size="sm">

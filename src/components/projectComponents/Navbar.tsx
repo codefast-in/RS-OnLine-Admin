@@ -17,7 +17,7 @@ import {Input} from "@/components/ui/input";
 // self made components
 import SwichMode from "../swichMode";
 import Image from "next/image";
-import { useTheme } from "next-themes";
+import {useTheme} from "next-themes";
 // Data
 const pagesLinks = [
   {label: "Dashboard", path: "/"},
@@ -29,18 +29,19 @@ const pagesLinks = [
   {label: "Reports", path: "/reports"},
   {label: "Settings", path: "/settings"},
 ];
-const logo = require("../../assets/img/logo-icon.png");
-const darkLogo = require("../../assets/img/darklogo.png");
-const lightLogo = require("../../assets/img/lightlogo.png");
+
+import darkLogo from "@/assets/img/darklogo.png";
+import lightLogo from "@/assets/img/lightlogo.png";
+
 export default function Navbar() {
-  const theme = "dark"
+  const theme = "dark";
   return (
     <Card className="flex items-center justify-center py-5 sticky top-0 border-x-0 border-t-0 rounded-none ">
       <div className=" flex items-center justify-around gap-32 max-w-[90%]">
         <Image
           height={100}
           width={100}
-          src={theme == "dark" ? darkLogo : lightLogo}
+          src={theme == "dark" ? lightLogo : darkLogo}
           alt="RS Logo"
           className="h-10 w-10"
         />
@@ -75,7 +76,9 @@ export default function Navbar() {
               <DropdownMenuItem>Edit Profile</DropdownMenuItem>
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem>Log Out</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/">Log Out</Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

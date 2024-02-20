@@ -41,7 +41,7 @@ export default function AddIncomeForm({
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="default" className="ml-auto">
+        <Button variant="default"  className="ml-auto">
           Add New Income <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
@@ -50,20 +50,20 @@ export default function AddIncomeForm({
           <DialogTitle>Income Details</DialogTitle>
           <DialogDescription>
             <form action="#" className="mt-5">
-              <div className="mb-5 gap-3 flex-col flex">
+              <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Product Name</Label>
                 <Input placeholder="Name" required />
               </div>
 
-              <div className="mb-5 gap-3 flex flex-col">
+              <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>MRP</Label>
                 <Input placeholder="00.0" required />
               </div>
-              <div className="mb-5 gap-3 flex flex-col">
+              <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>RS Price</Label>
                 <Input placeholder="00.0" required />
               </div>
-              {/* <div className="mb-5 gap-3 flex flex-col">
+              {/* <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Select Date</Label>
                 <div className={cn("grid gap-2", className)}>
                   <Popover>
@@ -104,7 +104,7 @@ export default function AddIncomeForm({
                 </div>
               </div> */}
 
-              <div className="mb-5 gap-3 flex flex-col">
+              <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Status</Label>
 
                 <Select>

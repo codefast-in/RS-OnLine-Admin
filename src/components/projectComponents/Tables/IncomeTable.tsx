@@ -233,9 +233,9 @@ export function IncomeTable() {
       <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Search Name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("productName")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("productName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -270,7 +270,7 @@ export function IncomeTable() {
       </div>
       <div className="rounded-md border">
         <Table>
-          <ScrollArea className="h-[350px] border-0 p-4 py-5 w-full ">
+          <ScrollArea className="h-[350px] border-0 p-4 py-5 w-full z-0 ">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>

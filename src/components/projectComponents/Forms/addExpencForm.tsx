@@ -50,21 +50,21 @@ export default function AddExpencForm({
           <DialogTitle>Expencese Details</DialogTitle>
           <DialogDescription>
             <form action="#" className="mt-5">
-              <div className="mb-5 gap-3 flex-col flex">
+              <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Type</Label>
                 <Input placeholder="Expencese Type" required />
               </div>
 
-              <div className="mb-5 gap-3 flex flex-col">
+              <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Discreption</Label>
                 <Input placeholder="Expencese Discreption" required />
               </div>
-              <div className="mb-5 gap-3 flex flex-col">
+              <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Amount</Label>
                 <Input type="number" placeholder="00.0" required />
               </div>
 
-              {/* <div className="mb-5 gap-3 flex flex-col">
+              {/* <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Select Date</Label>
                 <div className={cn("grid gap-2", className)}>
                   <Popover>
@@ -105,7 +105,7 @@ export default function AddExpencForm({
                 </div>
               </div> */}
 
-              <div className="mb-5 gap-3 flex flex-col">
+              <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Status</Label>
 
                 <Select>

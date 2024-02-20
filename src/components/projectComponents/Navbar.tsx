@@ -20,14 +20,14 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 // Data
 const pagesLinks = [
-  {label: "Dashboard", path: "admin/"},
-  {label: "Products", path: "admin/products"},
-  {label: "Retailers", path: "admin/retailers"},
-  {label: "Customers", path: "admin/customers"},
-  {label: "Employees", path: "admin/employees"},
-  {label: "Accounts", path: "admin/accounts"},
-  {label: "Reports", path: "admin/reports"},
-  {label: "Settings", path: "admin/settings"},
+  {label: "Dashboard", path: "/"},
+  {label: "Products", path: "/products"},
+  {label: "Retailers", path: "/retailers"},
+  {label: "Customers", path: "/customers"},
+  {label: "Employees", path: "/employees"},
+  {label: "Accounts", path: "/accounts"},
+  {label: "Reports", path: "/reports"},
+  {label: "Settings", path: "/settings"},
 ];
 const logo = require("../../assets/img/logo-icon.png");
 const darkLogo = require("../../assets/img/darklogo.png");

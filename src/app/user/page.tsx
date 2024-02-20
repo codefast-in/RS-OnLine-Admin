@@ -121,7 +121,7 @@ export default function page() {
               <CardContent>{task.description}</CardContent>
               <CardFooter className="gap-5">
                 <Button>Task Details</Button>
-                <Button > {task.status=='pending'?"Mark as Done":"Complited"} </Button>
+                <Button > {task.status=='pending'?"Mark as Done":"Task Complited"} </Button>
               </CardFooter>
             </Card>
           ))}

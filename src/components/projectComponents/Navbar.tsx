@@ -43,7 +43,7 @@ export default function Navbar() {
         {/* <Image height={100} width={100} src={logo} alt="RS"/> */}
         <div>
           {pagesLinks.map((link, index) => (
-            <Button key={index} asChild variant="ghost">
+            <Button key={index} asChild variant="ghost" size="sm">
               <Link href={link.path}>{link.label}</Link>
             </Button>
           ))}

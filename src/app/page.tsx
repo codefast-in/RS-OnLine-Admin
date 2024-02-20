@@ -1,16 +1,12 @@
 "use client";
 
-import React, {useState} from "react";
+import React from "react";
 import SwichMode from "@/components/swichMode";
-
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-
 import AdminLoginForm from "@/components/projectComponents/Forms/AdminLoginForm";
 import UserLoginForm from "@/components/projectComponents/Forms/UserLoginForm";
 
 export default function page() {
-  
-
   return (
     <main className="flex h-screen flex-col items-center justify-center sm:p-12  md:p-24">
       <div className="p-1 border-0 w-auto flex items-center justify-center">
@@ -20,16 +16,20 @@ export default function page() {
             <SwichMode />
           </div>
 
-          <Tabs defaultValue="account" className="w-[300px]  md:w-[400px]">
+          <Tabs defaultValue="admin" className="w-[300px]  md:w-[400px]">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="admin">Admin</TabsTrigger>
               <TabsTrigger value="user">User</TabsTrigger>
             </TabsList>
             <TabsContent value="admin">
-              <AdminLoginForm/>
+              <div>
+                <AdminLoginForm />
+              </div>
             </TabsContent>
             <TabsContent value="user">
-              <UserLoginForm/>
+              <div>
+                <UserLoginForm />
+              </div>
             </TabsContent>
           </Tabs>
         </form>
@@ -37,4 +37,3 @@ export default function page() {
     </main>
   );
 }
-

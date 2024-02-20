@@ -47,7 +47,7 @@ export default function Navbar() {
         <div>
           {pagesLinks.map((link, index) => (
             <Button key={index} asChild variant="ghost" size="sm">
-              <Link href={link.path}>{link.label}</Link>
+              <Link href={`admin${link.path}`}>{link.label}</Link>
             </Button>
           ))}
         </div>

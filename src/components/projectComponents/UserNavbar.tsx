@@ -76,58 +76,56 @@ export default function UserNavbar() {
           ))}
         </div> */}
         <div className="flex justify-end items-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="border-none rounded-full block md:hidden ">
+              <Button variant="ghost">
+                <BellIcon className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel className="flex flex-col gap-1">
+                <span>Notifications</span>
+              </DropdownMenuLabel>
 
-        
-        <DropdownMenu>
-          <DropdownMenuTrigger className="border-none rounded-full block md:hidden ">
-            <Button variant="ghost">
-              <BellIcon className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel className="flex flex-col gap-1">
-              <span>Notifications</span>
-            </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Notifications 1</DropdownMenuItem>
 
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Notifications 1</DropdownMenuItem>
+              <DropdownMenuItem>Notifications 2 </DropdownMenuItem>
+              <DropdownMenuItem>Notifications 3 </DropdownMenuItem>
 
-            <DropdownMenuItem>Notifications 2 </DropdownMenuItem>
-            <DropdownMenuItem>Notifications 3 </DropdownMenuItem>
+              <DropdownMenuSeparator />
 
-            <DropdownMenuSeparator />
+              <DropdownMenuItem>Mark as readed </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Sheet>
+            <SheetTrigger className="block md:hidden ">
+              <TextAlignRightIcon className="h-8 w-8" />
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle className="flex gap-5">
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>RS</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col justify-start items-start">
+                    <span>Sachin Pawar</span>
+                    <span className="text-xs opacity-50 ">
+                      sachinspind@gmail.com
+                    </span>
+                  </div>
+                </SheetTitle>
+              </SheetHeader>
 
-            <DropdownMenuItem>Mark as readed </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Sheet>
-          <SheetTrigger className="block md:hidden ">
-            <TextAlignRightIcon className="h-8 w-8" />
-          </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle className="flex gap-5">
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>RS</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col justify-start items-start">
-                  <span>Sachin Pawar</span>
-                  <span className="text-xs opacity-50 ">
-                    sachinspind@gmail.com
-                  </span>
-                </div>
-              </SheetTitle>
-            </SheetHeader>
-
-            <SheetDescription className="mb-auto flex-col flex gap-3 mt-5 ">
-              <Link href="/user/profile">Profile</Link>
-              <Link href="/user/editprofile">Edit Profile</Link>
-              <Link href="/user/setting">Setting</Link>
-              <Link href="/">Log Out</Link>
-            </SheetDescription>
-          </SheetContent>
-        </Sheet>
+              <SheetDescription className="mb-auto flex-col flex gap-3 mt-5 ">
+                <Link href="/user/profile">Profile</Link>
+                <Link href="/user/editprofile">Edit Profile</Link>
+                <Link href="/user/setting">Setting</Link>
+                <Link href="/">Log Out</Link>
+              </SheetDescription>
+            </SheetContent>
+          </Sheet>
         </div>
         <div className="md:flex justify-between items-center gap-3 ml-auto hidden ">
           <Input placeholder="Search..." enterKeyHint="search" />

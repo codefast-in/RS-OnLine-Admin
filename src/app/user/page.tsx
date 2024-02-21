@@ -112,7 +112,7 @@ export default function page() {
             </Card>
           ))}
         </div>
-        <div className="flex  justify-start items-start gap-5 w-full ">
+        <div className="flex flex-col lg:flex-row justify-start items-start gap-5 w-full ">
 
           <AddIncomeForm/>
           <AddExpencForm/>

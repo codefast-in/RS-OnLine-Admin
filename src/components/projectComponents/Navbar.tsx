@@ -1,7 +1,23 @@
 import React from "react";
 import Link from "next/link";
 
+import {
+  AlignRightIcon,
+  BellIcon,
+  LayersIcon,
+  TextAlignRightIcon,
+} from "@radix-ui/react-icons";
+
 // shadCN components
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,8 +52,10 @@ import lightLogo from "@/assets/img/lightlogo.png";
 export default function Navbar() {
   const theme = "dark";
   return (
-    <Card className="flex items-center justify-center py-5 sticky top-0 border-x-0 border-t-0 rounded-none ">
-      <div className=" flex items-center justify-around gap-32 max-w-[90%]">
+    <Card
+      className="flex items-center justify-center py-5 sticky top-0 border-x-0 border-t-0 rounded-none "
+      style={{backdropFilter: "blur(20px)"}}>
+      <div className="flex items-center justify-between  max-w-[90%] w-full bg-opacity-10 bg-transparent ">
         <Image
           height={100}
           width={100}
@@ -45,7 +63,7 @@ export default function Navbar() {
           alt="RS Logo"
           className="h-10 w-10"
         />
-        <div>
+        <div className="lg:block hidden ">
           {pagesLinks.map((link, index) => (
             <Button key={index} asChild variant="ghost" size="sm">
               <Link href={`/admin${link.path}`}>{link.label}</Link>
@@ -53,11 +71,44 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="flex justify-between items-center gap-3">
-          <Input placeholder="Search..." enterKeyHint="search" />
+        <div className="flex justify-between items-center lg:gap-3">
+          <Input
+            placeholder="Search..."
+            enterKeyHint="search"
+            className="ml-5 "
+          />
           <SwichMode />
+          <Sheet>
+            <SheetTrigger className="block lg:hidden ">
+              <TextAlignRightIcon className="h-8 w-8" />
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle className="flex gap-5">
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>RS</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col justify-start items-start">
+                    <span>Sachin Pawar</span>
+                    <span className="text-xs opacity-50 ">
+                      sachinspind@gmail.com
+                    </span>
+                  </div>
+                </SheetTitle>
+              </SheetHeader>
+
+              <SheetDescription className="mb-auto flex-col flex gap-3 mt-5 justify-start items-center ">
+                {pagesLinks.map((link, index) => (
+                  <Button key={index} asChild variant="ghost" size="sm">
+                    <Link href={`/admin${link.path}`}>{link.label}</Link>
+                  </Button>
+                ))}
+              </SheetDescription>
+            </SheetContent>
+          </Sheet>
           <DropdownMenu>
-            <DropdownMenuTrigger className="border-none rounded-full">
+            <DropdownMenuTrigger className="border-none rounded-full lg:block hidden">
               <Avatar>
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>RS</AvatarFallback>

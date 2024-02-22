@@ -2,7 +2,7 @@ import React from 'react'
 import SideBar from '@/components/projectComponents/SideBar'
 
 const linksData = [
-    {label: "Retailer List", path: "/retailers/retallist"},
+    {label: "Retailer List", path: "/admin/retailers/retallist"},
     
   ];
 export default function Retailerslayout({

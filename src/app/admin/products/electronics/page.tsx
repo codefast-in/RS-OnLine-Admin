@@ -8,7 +8,7 @@ export default function page() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Electronics's Item</CardTitle>
+          <CardTitle className="text-lg">Electronicss Item</CardTitle>
         </CardHeader>
         <CardContent>
             <ProductsTable/>

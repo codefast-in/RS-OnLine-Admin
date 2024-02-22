@@ -93,7 +93,7 @@ function page({props}: any) {
       <Separator />
       <CardHeader>
         <CardTitle>Work Details</CardTitle>
-        <CardDescription>All task's and work details</CardDescription>
+        <CardDescription>All tasks and work details</CardDescription>
       </CardHeader>
       <div className="mt-5 p-0">
         <CardContent className="flex items-center gap-5 justify-between">

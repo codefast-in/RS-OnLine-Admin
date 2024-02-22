@@ -43,6 +43,7 @@ import {
 import {ScrollArea} from "@/components/ui/scroll-area";
 
 import AddEmpForm from "../Forms/addEmpForm";
+import Link from "next/link";
 
 const data: Employees[] = [
   {
@@ -58,7 +59,7 @@ const data: Employees[] = [
     id: "3u1reuv4",
     amount: 242,
     name: "Sandeep Pawar",
-    empID: "RS-001",
+    empID: "RS-002",
     roll: "head",
     status: "absent",
     email: "Abe45@gmail.com",
@@ -67,7 +68,7 @@ const data: Employees[] = [
     id: "derv1ws0",
     amount: 837,
     name: "Karan Pawar",
-    empID: "RS-001",
+    empID: "RS-003",
     roll: "employee",
     status: "onleave",
     email: "Monserrat44@gmail.com",
@@ -76,7 +77,7 @@ const data: Employees[] = [
     id: "5kma53ae",
     amount: 874,
     name: "Manish Pawar",
-    empID: "RS-001",
+    empID: "RS-004",
     roll: "manager",
     status: "present",
     email: "Silas22@gmail.com",
@@ -85,7 +86,7 @@ const data: Employees[] = [
     id: "bhqecj4p",
     amount: 721,
     name: "Pankaj Pawar",
-    empID: "RS-001",
+    empID: "RS-005",
     roll: "manager",
     status: "present",
     email: "carmella@hotmail.com",
@@ -94,7 +95,7 @@ const data: Employees[] = [
     id: "bhqecj5p",
     amount: 821,
     name: "Sataym Pawar",
-    empID: "RS-001",
+    empID: "RS-006",
     roll: "manager",
     status: "present",
     email: "carmella@hotmail.com",
@@ -103,7 +104,7 @@ const data: Employees[] = [
     id: "bhqecj6p",
     amount: 621,
     name: "Aakash Pawar",
-    empID: "RS-001",
+    empID: "RS-007",
     roll: "manager",
     status: "present",
     email: "carmella@hotmail.com",
@@ -233,7 +234,7 @@ export const columns: ColumnDef<Employees>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
-            <DropdownMenuItem>View Employees details</DropdownMenuItem>
+            <DropdownMenuItem asChild><Link href={`/admin/employees/emplist/${Employees.empID}`}>View Employees details</Link></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

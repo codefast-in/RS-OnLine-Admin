@@ -2,10 +2,10 @@ import React from 'react'
 import SideBar from '@/components/projectComponents/SideBar'
 
 const linksData = [
-    {label: "Employees List", path: "employees/emplist"},
-    {label: "Tasks", path: "employees/tasks"},
-    {label: "Leave Requests", path: "employees/leave"},
-    {label: "Attendance", path: "employees/attendance"},
+    {label: "Employees List", path: "/admin/employees/emplist"},
+    {label: "Tasks", path: "/admin/employees/tasks"},
+    {label: "Leave Requests", path: "/admin/employees/leave"},
+    {label: "Attendance", path: "/admin/employees/attendance"}, 
   ];
 export default function layout({
     children,

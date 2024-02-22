@@ -37,6 +37,7 @@ import {useTheme} from "next-themes";
 // Data
 const pagesLinks = [
   {label: "Dashboard", path: "/"},
+  {label: "Orders", path: "/orders"},
   {label: "Products", path: "/products"},
   {label: "Retailers", path: "/retailers"},
   {label: "Customers", path: "/customers"},
@@ -98,9 +99,9 @@ export default function Navbar() {
                 </SheetTitle>
               </SheetHeader>
 
-              <SheetDescription className="mb-auto flex-col flex gap-3 mt-5 justify-start items-center ">
+              <SheetDescription className="mb-auto flex-col flex gap-3 mt-5 justify-start items-start ">
                 {pagesLinks.map((link, index) => (
-                  <Button key={index} asChild variant="ghost" size="sm">
+                  <Button key={index} asChild variant="ghost" size="sm" >
                     <Link href={`/admin${link.path}`}>{link.label}</Link>
                   </Button>
                 ))}

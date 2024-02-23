@@ -12,7 +12,7 @@ import {EmpListTable} from "@/components/projectComponents/Tables/EmpListTable";
 
 export default function page() {
   return (
-    <div className="mr-10 py-5 w-[80%] h-full  ">
+    <div className="mr-10 py-5 w-[80%] h-full ">
       <div className="flex items-center gap-5 justify-between">
         <Card className="w-full">
           <CardHeader>

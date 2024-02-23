@@ -13,8 +13,8 @@ export default function Customerslayout({
     children: React.ReactNode;
   }>) {
   return (
-    <div className='flex w-screen items-start justify- gap-10'>
-          <SideBar links={linksData} />
+    <div className='flex w-screen items-start justify-center gap-10'>
+          {/* <SideBar links={linksData} /> */}
       {children}
     </div>
   )

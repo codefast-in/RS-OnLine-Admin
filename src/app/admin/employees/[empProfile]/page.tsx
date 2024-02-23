@@ -1,6 +1,8 @@
 "use client";
 
 import {Button} from "@/components/ui/button";
+import {Calendar} from "@/components/ui/calendar";
+import {DayPicker} from "react-day-picker";
 import {
   Card,
   CardContent,
@@ -16,14 +18,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
 import {Separator} from "@/components/ui/separator";
 import {TargetIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import dayjs from "dayjs";
 
 const empPr = require("@/assets/img/profilepic1.jpg");
 const cardData = [
@@ -33,8 +36,10 @@ const cardData = [
   //   {cardtitle: "Ongoing Tasks", value: 15},
 ];
 
-function page({props}: any) {
-  console.log(props);
+function Page({props}: any) {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  const [selectedDay, setSelectedDay] = React.useState<Date>();
+  const handleDayClick = (day: Date) => setSelectedDay(day);
   return (
     <Card className="mt-5 w-[80%]">
       <CardHeader>
@@ -105,7 +110,7 @@ function page({props}: any) {
 
                   <TargetIcon className="text-2xl" />
                 </div>
-                <CardDescription>All Firms</CardDescription>
+                <CardDescription>This Month</CardDescription>
               </CardHeader>
               <CardContent className="text-2xl text-primary font-bold">
                 <p>{card.value}</p>
@@ -113,43 +118,60 @@ function page({props}: any) {
             </Card>
           ))}
         </CardContent>
+        <CardContent className="flex flex-col justify-start items-start">
+          <CardTitle className="my-3">
+            Absent Days
+          </CardTitle>
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="rounded-md border"
+          />
+        </CardContent>
       </div>
 
       <div className="mt-5 p-0">
         <CardContent>
-         
           <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="default">Send Notification</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Notification Details</DialogTitle>
-         
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="flex flex-col justify-start items-start  gap-4">
-            <Label htmlFor="name" className="text-right">
-            Title
-            </Label>
-            <Input id="name" placeholder="Notification Title" className="col-span-3" />
-          </div>
-          <div className="flex flex-col justify-start items-start  gap-4">
-            <Label htmlFor="name" className="text-right">
-            Descreption
-            </Label>
-            <Input id="name" placeholder="Notification Descreption" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Send</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <DialogTrigger asChild>
+              <Button variant="default">Send Notification</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Notification Details</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="flex flex-col justify-start items-start  gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Title
+                  </Label>
+                  <Input
+                    id="name"
+                    placeholder="Notification Title"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="flex flex-col justify-start items-start  gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Descreption
+                  </Label>
+                  <Input
+                    id="name"
+                    placeholder="Notification Descreption"
+                    className="col-span-3"
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Send</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </CardContent>
       </div>
     </Card>
   );
 }
 
-export default page;
+export default Page;

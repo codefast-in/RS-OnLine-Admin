@@ -41,7 +41,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange>
           {/* <Navbar /> */}
-          <main className="overflow-hidden">{children}</main>
+          <main className="overflow-hidden ">{children}</main>
         </ThemeProvider>
       </body>
     </html>

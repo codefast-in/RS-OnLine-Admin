@@ -234,7 +234,7 @@ export const columns: ColumnDef<Employees>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
-            <DropdownMenuItem asChild><Link href={`/admin/employees/emplist/${Employees.empID}`}>View Employees details</Link></DropdownMenuItem>
+            <DropdownMenuItem asChild><Link href={`/admin/employees/${Employees.empID}`}>View Employees details</Link></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

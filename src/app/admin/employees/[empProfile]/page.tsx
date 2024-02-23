@@ -36,7 +36,7 @@ const cardData = [
   //   {cardtitle: "Ongoing Tasks", value: 15},
 ];
 
-function page({props}: any) {
+function Page({props}: any) {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [selectedDay, setSelectedDay] = React.useState<Date>();
   const handleDayClick = (day: Date) => setSelectedDay(day);
@@ -174,4 +174,4 @@ function page({props}: any) {
   );
 }
 
-export default page;
+export default Page;

@@ -29,7 +29,7 @@ const data = [
   },
 ];
 
-function page() {
+function Page() {
   const [data, setProducts] = React.useState([]);
 
   React.useEffect(() => {
@@ -99,7 +99,7 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
 
 const Notification = () => (
   <Dialog>

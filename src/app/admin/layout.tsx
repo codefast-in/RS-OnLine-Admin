@@ -4,6 +4,7 @@ import {Inter} from "next/font/google";
 import {ThemeProvider} from "@/components/theme-provider";
 
 import Navbar from "@/components/projectComponents/Navbar";
+// import Home from "./page";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -30,6 +31,7 @@ export default function RootLayout({
           <Navbar />
           <main className="overflow-hidden">{children}</main>
         </ThemeProvider>
+        
       </body>
     </html>
   ) 

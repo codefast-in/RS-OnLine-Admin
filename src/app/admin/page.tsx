@@ -45,7 +45,7 @@ export default function Home() {
           </Card>
         ))}
       </div>
-      {/* <span>thhthththh</span> */}
+  
 
       <div className="flex flex-row justify-between items-start  w-[85%] mt-4 gap-9">
         <Pai_Chart />

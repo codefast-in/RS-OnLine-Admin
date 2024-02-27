@@ -43,8 +43,8 @@ const pagesLinks = [
   {label: "Customers", path: "/customers"},
   {label: "Employees", path: "/employees"},
   {label: "Accounts", path: "/accounts"},
-  {label: "Reports", path: "/reports"},
-  {label: "Settings", path: "/settings"},
+  // {label: "Reports", path: "/reports"},
+  // {label: "Settings", path: "/settings"},
 ];
 
 import darkLogo from "@/assets/img/darklogo.png";
@@ -54,13 +54,13 @@ export default function Navbar() {
   const theme = "dark";
   return (
     <Card
-      className="flex items-center justify-center py-5 sticky top-0 border-x-0 border-t-0 rounded-none "
+      className="flex items-center justify-center py-5 0 sticky top-0 border-x-0 border-t-0 rounded-none z-50"
       style={{backdropFilter: "blur(20px)"}}>
-      <div className="flex items-center justify-between  max-w-[90%] w-full bg-opacity-10 bg-transparent ">
+      <div className="flex items-center justify-between  max-w-[85%] w-full bg-opacity-10 bg-transparent ">
         <Image
           height={100}
           width={100}
-          src={theme == "dark" ? lightLogo : darkLogo}
+          src={ lightLogo}
           alt="RS Logo"
           className="h-10 w-10"
         />
@@ -78,7 +78,7 @@ export default function Navbar() {
             enterKeyHint="search"
             className="ml-5 "
           />
-          <SwichMode />
+          {/* <SwichMode /> */}
           <Sheet>
             <SheetTrigger className="block lg:hidden ">
               <TextAlignRightIcon className="h-8 w-8" />

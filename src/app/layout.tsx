@@ -7,7 +7,7 @@ import Navbar from "@/components/projectComponents/Navbar";
 
 const inter = Inter({subsets: ["latin"]});
 
-const isLogin = false
+const isLogin = false;
 
 export const metadata: Metadata = {
   title: "RS Online Admin",
@@ -22,27 +22,14 @@ export default function RootLayout({
   return isLogin ? (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange>
-          <Navbar />
-          <main className="overflow-hidden">{children}</main>
-        </ThemeProvider>
+        <Navbar />
+        <main className="overflow-hidden">{children}</main>
       </body>
     </html>
   ) : (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange>
-          {/* <Navbar /> */}
-          <main className="overflow-hidden ">{children}</main>
-        </ThemeProvider>
+        <main className="overflow-hidden ">{children}</main>
       </body>
     </html>
   );

@@ -46,7 +46,7 @@ function Page() {
         <AddRetailerForm/>
       </div>
 
-      <div className="h-[80dvh] w-full grid grid-cols-3 overflow-y-auto border p-2 rounded-md gap-5">
+      <div className="h-[80dvh] w-full grid grid-cols-3 overflow-y-auto  p-2 rounded-md gap-5">
         {data.map((retaler: any, index: number) => (
           <Card key={index} >
             <CardContent className="flex items-center justify-around gap-10 p-6 min-w-fit">

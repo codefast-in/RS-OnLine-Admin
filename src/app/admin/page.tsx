@@ -47,11 +47,11 @@ export default function Home() {
       </div>
   
 
-      <div className="flex flex-row justify-between items-start  w-[85%] mt-4 gap-9">
+      {/* <div className="flex flex-row justify-between items-start  w-[85%] mt-4 gap-9">
         <Pai_Chart />
         <Dchart />
         <Line_Chart />
-      </div>
+      </div> */}
       <div className="flex flex-row justify-around items-start mt-4  w-[85%] gap-9">
         <TopSellerTable />
         <RetailerTable />

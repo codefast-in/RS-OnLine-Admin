@@ -19,14 +19,14 @@ export default function Page() {
           <Tabs defaultValue="admin" className="w-[300px]  md:w-[400px]">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="admin">Admin</TabsTrigger>
-              <TabsTrigger value="user">User</TabsTrigger>
+              <TabsTrigger value="Employee">Employee</TabsTrigger>
             </TabsList>
             <TabsContent value="admin">
               <div>
                 <AdminLoginForm />
               </div>
             </TabsContent>
-            <TabsContent value="user">
+            <TabsContent value="Employee">
               <div>
                 <UserLoginForm />
               </div>

@@ -48,7 +48,7 @@ export default function Home() {
   
 
       <div className="flex flex-row justify-between items-start  w-[85%] mt-4 gap-9">
-        <Pai_Chart />
+        {/* <Pai_Chart /> */}
         <Dchart />
         <Line_Chart />
       </div>

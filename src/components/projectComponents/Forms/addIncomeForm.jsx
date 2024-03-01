@@ -32,7 +32,7 @@ import {Button} from "@/components/ui/button";
 import app from "@/utils/axios";
 export default function AddIncomeForm({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+}) {
   const [data, setData] = React.useState({
     productname: "",
     mrp: "",
@@ -41,13 +41,13 @@ export default function AddIncomeForm({
     date: new Date(),
   });
 
-  const sendData = async (e: any) => {
+  const sendData = async (e) => {
     e.preventDefault();
     const info = data;
     try {
       const responce = await app.post("/api/employee/signup/", info);
       console.log(responce);
-    } catch (error: any) {
+    } catch (error) {
       console.log(error.message);
     }
   };

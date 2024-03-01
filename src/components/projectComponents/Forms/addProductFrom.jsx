@@ -31,7 +31,7 @@ import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 
 export default function AddProductForm() {
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = React.useState();
   return (
     <Dialog>
       <DialogTrigger>

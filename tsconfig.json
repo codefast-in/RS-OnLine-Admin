@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/projectComponents/Forms/addEmpForm.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/projectComponents/Forms/addEmpForm.jsx", "src/components/projectComponents/Forms/UserLoginForm.jsx", "src/redux configs/Actions/employeeAction.jsx", "src/redux configs/Reducers/employeeReducer.jsx"],
   "exclude": ["node_modules"]
 }

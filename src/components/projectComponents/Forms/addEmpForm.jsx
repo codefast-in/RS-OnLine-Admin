@@ -33,7 +33,7 @@ import {useDispatch} from "react-redux";
 import {asyncAddEmployee} from "@/redux configs/Actions/employeeAction";
 
 export default function AddEmpForm() {
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = React.useState();
 
   const [data, setData] = React.useState({
     name: "",
@@ -49,13 +49,13 @@ export default function AddEmpForm() {
 
   const dispatch = useDispatch();
 
-  const sendData = async (e: any) => {
+  const sendData = async (e) => {
     e.preventDefault();
     const info = data;
     try {
       const responce = dispatch(asyncAddEmployee(info));
       console.log(responce);
-    } catch (error: any) {
+    } catch (error) {
       console.log(error.message);
     }
   };

@@ -29,23 +29,23 @@ function UserLoginForm() {
     password: "",
   });
 
-  const logout = async (e: any) => {
+  const logout = async (e) => {
     e.preventDefault();    
     try {
       // const responce = dispatch(removeEmployee());
       // console.log(responce);
-    } catch (error: any) {
+    } catch (error) {
       console.log(error.message);
     }
   };
-  const sendData = async (e: any) => {
+  const sendData = async (e) => {
     e.preventDefault();
     const info = data;
     try {
-      const responce = dispatch(asyncLoginEmployee(info));
+      dispatch(asyncLoginEmployee(info));
      
       // console.log(responce);
-    } catch (error: any) {
+    } catch (error) {
       console.log(error.message);
     }
   };

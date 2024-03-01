@@ -8,30 +8,30 @@ import {
 
 
 export const asyncAddEmployee =
-  (employee: {}) => async (dispatch: any, getState: any) => {
+  (employee) => async (dispatch, getState) => {
     try {
       const {data} = await app.post("/api/employee/signup/", employee);
 
       // console.log(data);
-    } catch (error: any) {
+    } catch (error) {
       dispatch(isError(error.response.data.message));
     }
   };
 
 export const asynceCurrentEmployee =
-  () => async (dispatch: any, getState: any) => {
+  () => async (dispatch, getState) => {
     try {
       const {data} = await app.post("/api/employee/current/");
       console.log(data);      
       dispatch(addEmployee(data.employee));
-    } catch (error: any) {
+    } catch (error) {
       dispatch(isError(error.response.data.message));
       console.log(error.response.data.message);
     }
   };
 
 export const asyncLoginEmployee =
-  (loginData: {}) => async (dispatch: any, getState: any) => {
+  (loginData) => async (dispatch, getState) => {
     try {
       const {data} = await app.post("/api/employee/signin/", loginData);
       console.log(data);
@@ -39,20 +39,20 @@ export const asyncLoginEmployee =
         console.log("1sec")
         dispatch(asynceCurrentEmployee());
       }, 1000);
-    } catch (error: any) {
+    } catch (error) {
       dispatch(isError(error.response.data.message));
       console.log(error.response.data.message);
     }
   };
 
 export const asyncLogoutEmployee =
-  () => async (dispatch: any, getState: any) => {
+  () => async (dispatch, getState) => {
     try {
       const {data} = await app.get("/api/employee/signout/");
 
       console.log(data);
       dispatch(removeEmployee());
-    } catch (error: any) {
+    } catch (error) {
       dispatch(isError(error.response.data.message));
     }
   };

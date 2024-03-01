@@ -25,6 +25,25 @@ const nextConfig = {
       },
     ],
   },
+  
 };
 
+
+
 export default nextConfig;
+
+
+
+// module.exports = {
+//   webpackDevMiddleware: (config) => {
+//     // Enable the webpack dev middleware which allows you to use a proxy
+//     config.proxy = {
+//       "/api": {
+//         target: "https://hrmsoftware.onrender.com",
+//         pathRewrite: {"^/api": "/api"},
+//         changeOrigin: true,
+//       },
+//     };
+//     return config;
+//   },
+// };

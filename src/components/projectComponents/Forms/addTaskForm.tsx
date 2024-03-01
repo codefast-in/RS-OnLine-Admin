@@ -13,7 +13,6 @@ import {
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -22,15 +21,14 @@ import {CalendarIcon, PlusIcon} from "@radix-ui/react-icons";
 
 import {Input} from "@/components/ui/input";
 import {Label} from "@radix-ui/react-label";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-// import {format} from "date-fns";
+
 import {addDays, format} from "date-fns";
 import {DateRange} from "react-day-picker";
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-
+import app from "@/utils/axios";
 export default function AddTaskForm({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
@@ -38,6 +36,27 @@ export default function AddTaskForm({
     from: new Date(2022, 0, 20),
     to: addDays(new Date(2022, 0, 20), 20),
   });
+
+  const [data, setData] = React.useState({
+    title: "",
+    discreption: "",
+    team: "",
+    status: "",
+    date: new Date(),
+  });
+
+  const sendData = async (e: any) => {
+    e.preventDefault();
+    const info = data;
+    try {
+      const responce = await app.post("/api/employee/signup/", info);
+      console.log(responce);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -49,15 +68,15 @@ export default function AddTaskForm({
         <DialogHeader>
           <DialogTitle>Asign New Task</DialogTitle>
           <DialogDescription>
-            <form action="#" className="mt-5">
+            <form onSubmit={sendData} className="mt-5">
               <div className="mb-5 gap-3 flex-col flex">
                 <Label>Title</Label>
-                <Input placeholder="Task Title" required />
+                <Input placeholder="Task Title" onChange={(e) => setData({...data, title: e.target.value})} required />
               </div>
 
               <div className="mb-5 gap-3 flex flex-col">
                 <Label>Discreption</Label>
-                <Input placeholder="Task Discreption" required />
+                <Input placeholder="Task Discreption" onChange={(e) => setData({...data, discreption: e.target.value})} required />
               </div>
 
               <div className="mb-5 gap-3 flex flex-col">
@@ -93,7 +112,10 @@ export default function AddTaskForm({
                         mode="range"
                         defaultMonth={date?.from}
                         selected={date}
-                        onSelect={setDate}
+                        onSelect={(e) => {
+                          setData({...data, date: e});
+                          setDate(e);
+                        }}
                         numberOfMonths={2}
                       />
                     </PopoverContent>
@@ -102,11 +124,11 @@ export default function AddTaskForm({
               </div>
 
               <div className="mb-5 gap-3 flex flex-col">
-                <Label>Select Team</Label>
+                <Label>Select Employee</Label>
 
-                <Select>
+                <Select onValueChange={(e)=> setData({...data, team:e})}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Team Leader" />
+                    <SelectValue placeholder="Employee" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="employee">Sachin</SelectItem>
@@ -115,7 +137,7 @@ export default function AddTaskForm({
                     <SelectItem value="new">Aman</SelectItem>
                   </SelectContent>
                 </Select>
-                <Select>
+                {/* <Select>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Team Member" />
                   </SelectTrigger>
@@ -125,7 +147,7 @@ export default function AddTaskForm({
                     <SelectItem value="manager">Sandip</SelectItem>
                     <SelectItem value="new">Aman</SelectItem>
                   </SelectContent>
-                </Select>
+                </Select> */}
               </div>
               <div className="flex gap-3">
                 <Button variant="destructive" className="w-full">

@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog";
 
 import {
@@ -18,30 +19,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {CalendarIcon, PlusIcon} from "@radix-ui/react-icons";
+import {PlusIcon} from "@radix-ui/react-icons";
 
 import {Input} from "@/components/ui/input";
 import {Label} from "@radix-ui/react-label";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-// import {format} from "date-fns";
+
 import {addDays, format} from "date-fns";
 import {DateRange} from "react-day-picker";
-import {cn} from "@/lib/utils";
-import {Button} from "@/components/ui/button";
-import {Calendar} from "@/components/ui/calendar";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 
+import {Button} from "@/components/ui/button";
+
+import app from "@/utils/axios";
 export default function AddIncomeForm({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+  const [data, setData] = React.useState({
+    productname: "",
+    mrp: "",
+    rsprice: "",
+    status: "",
+    date: new Date(),
   });
+
+  const sendData = async (e: any) => {
+    e.preventDefault();
+    const info = data;
+    try {
+      const responce = await app.post("/api/employee/signup/", info);
+      console.log(responce);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="default"  className="ml-auto">
+        <Button variant="default" className="ml-auto">
           Add New Income <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
@@ -49,80 +63,55 @@ export default function AddIncomeForm({
         <DialogHeader>
           <DialogTitle>Income Details</DialogTitle>
           <DialogDescription>
-            <form action="#" className="mt-5">
+            <form onSubmit={sendData} className="mt-5">
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Product Name</Label>
-                <Input placeholder="Name" required />
+                <Input
+                  placeholder="Name"
+                  onChange={(e) =>
+                    setData({...data, productname: e.target.value})
+                  }
+                  required
+                />
               </div>
 
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>MRP</Label>
-                <Input placeholder="00.0" required />
+                <Input
+                  placeholder="00.0"
+                  onChange={(e) => setData({...data, mrp: e.target.value})}
+                  required
+                />
               </div>
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>RS Price</Label>
-                <Input placeholder="00.0" required />
+                <Input
+                  placeholder="00.0"
+                  onChange={(e) => setData({...data, rsprice: e.target.value})}
+                  required
+                />
               </div>
-              {/* <div className="mb-5 gap-3 flex flex-col items-start">
-                <Label>Select Date</Label>
-                <div className={cn("grid gap-2", className)}>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="date"
-                        variant={"outline"}
-                        className={cn(
-                          "w-[300px] justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}>
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {date?.from ? (
-                          date.to ? (
-                            <>
-                              {format(date.from, "LLL dd, y")} -{" "}
-                              {format(date.to, "LLL dd, y")}
-                            </>
-                          ) : (
-                            format(date.from, "LLL dd, y")
-                          )
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        initialFocus
-                        mode="range"
-                        defaultMonth={date?.from}
-                        selected={date}
-                        onSelect={setDate}
-                        numberOfMonths={2}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div> */}
+           
 
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Status</Label>
 
-                <Select>
+                <Select onValueChange={(e) => setData({...data, status: e})}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="employee">Pending</SelectItem>
                     <SelectItem value="head">Paid</SelectItem>
-                   
                   </SelectContent>
                 </Select>
-              
               </div>
               <div className="flex gap-3">
-                <Button variant="destructive" className="w-full">
-                  Cancel
-                </Button>
+              <DialogClose asChild>
+                  <Button variant="destructive" className="w-full">
+                    Cancel
+                  </Button>
+                </DialogClose>
                 <Button variant="default" className="w-full">
                   Add
                 </Button>

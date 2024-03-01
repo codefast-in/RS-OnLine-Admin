@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Card,
@@ -10,7 +12,26 @@ import {
 import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined";
 import {EmpListTable} from "@/components/projectComponents/Tables/EmpListTable";
 
+import app from "@/utils/axios";
+import {Button} from "@/components/ui/button";
 export default function page() {
+  const sendData = async () => {
+    try {
+      const info = {
+        firstname: "Dharmendra",
+        lastname: "patel",
+        password: "1234567",
+        email: "s@gmail.com",
+        contact:'1234567890',
+        joindate:'ergvre'
+      };
+      const data = await app.post("/api/employee/signup/", info);
+      console.log(data);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="mr-10 py-5 w-[80%] h-full ">
       <div className="flex items-center gap-5 justify-between">
@@ -64,6 +85,7 @@ export default function page() {
           </CardContent>
         </Card>
       </div>
+      {/* <Button onClick={sendData}>Clik</Button> */}
       <EmpListTable />
     </div>
   );

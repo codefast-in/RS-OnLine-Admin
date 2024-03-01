@@ -41,6 +41,7 @@ function Page({props}: any) {
   const [selectedDay, setSelectedDay] = React.useState<Date>();
   const handleDayClick = (day: Date) => setSelectedDay(day);
   return (
+    
     <Card className="mt-5 w-[80%]">
       <CardHeader>
         <CardTitle>Employee Details</CardTitle>

@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 
 import {
@@ -18,26 +19,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {CalendarIcon, PlusIcon} from "@radix-ui/react-icons";
+import {PlusIcon} from "@radix-ui/react-icons";
 
 import {Input} from "@/components/ui/input";
 import {Label} from "@radix-ui/react-label";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-// import {format} from "date-fns";
-import {addDays, format} from "date-fns";
-import {DateRange} from "react-day-picker";
-import {cn} from "@/lib/utils";
-import {Button} from "@/components/ui/button";
-import {Calendar} from "@/components/ui/calendar";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 
+import {Button} from "@/components/ui/button";
+
+import app from "@/utils/axios";
 export default function AddExpencForm({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+  const [data, setData] = React.useState({
+    type: "",
+    discreption: "",
+    amount: "",
+    status: "",
+    date: new Date(),
   });
+
+  const sendData = async (e: any) => {
+    e.preventDefault();
+    const info = data;
+    try {
+      const responce = await app.post("/api/employee/signup/", info);
+      console.log(responce);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
+  
   return (
     <Dialog>
       <DialogTrigger>
@@ -49,19 +61,34 @@ export default function AddExpencForm({
         <DialogHeader>
           <DialogTitle>Expencese Details</DialogTitle>
           <DialogDescription>
-            <form action="#" className="mt-5">
+            <form onSubmit={sendData} className="mt-5">
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Type</Label>
-                <Input placeholder="Expencese Type" required />
+                <Input
+                  placeholder="Expencese Type"
+                  onChange={(e) => setData({...data, type: e.target.value})}
+                  required
+                />
               </div>
 
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Discreption</Label>
-                <Input placeholder="Expencese Discreption" required />
+                <Input
+                  placeholder="Expencese Discreption"
+                  onChange={(e) =>
+                    setData({...data, discreption: e.target.value})
+                  }
+                  required
+                />
               </div>
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Amount</Label>
-                <Input type="number" placeholder="00.0" required />
+                <Input
+                  type="number"
+                  placeholder="00.0"
+                  onChange={(e) => setData({...data, amount: e.target.value})}
+                  required
+                />
               </div>
 
               {/* <div className="mb-5 gap-3 flex flex-col items-start">
@@ -108,23 +135,23 @@ export default function AddExpencForm({
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Status</Label>
 
-                <Select>
+                <Select onValueChange={(e) => setData({...data, status: e})}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="employee">Pending</SelectItem>
                     <SelectItem value="head">Paid</SelectItem>
-                   
                   </SelectContent>
                 </Select>
-              
               </div>
               <div className="flex gap-3">
-                <Button variant="destructive" className="w-full">
-                  Cancel
-                </Button>
-                <Button variant="default" className="w-full">
+                <DialogClose asChild>
+                  <Button variant="destructive" className="w-full">
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button variant="default" type="submit" className="w-full">
                   Add
                 </Button>
               </div>

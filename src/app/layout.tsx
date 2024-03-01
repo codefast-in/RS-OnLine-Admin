@@ -1,13 +1,10 @@
 import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
-import {ThemeProvider} from "@/components/theme-provider";
 
-import Navbar from "@/components/projectComponents/Navbar";
+import Wraper from "../components/wraper";
 
 const inter = Inter({subsets: ["latin"]});
-
-const isLogin = false;
 
 export const metadata: Metadata = {
   title: "RS Online Admin",
@@ -19,17 +16,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return isLogin ? (
+  return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        <main className="overflow-hidden">{children}</main>
-      </body>
-    </html>
-  ) : (
-    <html lang="en">
-      <body className={inter.className}>
-        <main className="overflow-hidden ">{children}</main>
+      <body suppressHydrationWarning className={inter.className} >
+        <main className="overflow-hidden">
+          <Wraper>{children}</Wraper>
+        </main>
       </body>
     </html>
   );

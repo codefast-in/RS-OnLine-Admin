@@ -36,6 +36,7 @@ import {
   TextAlignRightIcon,
 } from "@radix-ui/react-icons";
 import {useTheme} from "next-themes";
+import { useDispatch } from "react-redux";
 
 // Data
 const pagesLinks = [
@@ -53,6 +54,10 @@ const lightLogo = require("../../assets/img/lightlogo.png");
 
 export default function UserNavbar() {
   const theme = "dark";
+  const dispatch = useDispatch()
+  const logOut = ()=>{
+    dispatch()
+  }
   return (
     <Card
       className="flex items-center justify-center py-3 md:py-5 sticky top-0 border-x-0 border-t-0 rounded-none z-10 bg-transparent bg-clip-padding"

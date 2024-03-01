@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 
 import {
@@ -18,19 +19,47 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {CalendarIcon, PlusIcon} from "@radix-ui/react-icons";
-
 import {Input} from "@/components/ui/input";
 import {Label} from "@radix-ui/react-label";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {format} from "date-fns";
-
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {ScrollArea} from "@/components/ui/scroll-area";
+import app from "@/utils/axios";
+import {useDispatch} from "react-redux";
+import {asyncAddEmployee} from "@/redux configs/Actions/employeeAction";
 
 export default function AddEmpForm() {
   const [date, setDate] = React.useState<Date>();
+
+  const [data, setData] = React.useState({
+    name: "",
+    email: "",
+    contact: "",
+    age: "",
+    gender: "",
+    password: "",
+    document: "",
+    joindate: date,
+    role: "",
+  });
+
+  const dispatch = useDispatch();
+
+  const sendData = async (e: any) => {
+    e.preventDefault();
+    const info = data;
+    try {
+      const responce = dispatch(asyncAddEmployee(info));
+      console.log(responce);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -40,35 +69,94 @@ export default function AddEmpForm() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Employee</DialogTitle>
+          <DialogTitle>Add New Employee</DialogTitle>{" "}
+        </DialogHeader>
+        <ScrollArea className="h-[80dvh] w-full rounded-md border px-4">
           <DialogDescription>
-            <form action="#" className="mt-5">
+            <form
+              // encType="multipart/formdata"
+              onSubmit={sendData}
+              className="mt-5">
               <div className="mb-5">
                 <Label>Name</Label>
-                <Input placeholder="Employee's Name" required />
+                <Input
+                  type="text"
+                  name="name"
+                  placeholder="Employee's Name"
+                  // value={data.name}
+                  onChange={(e) => setData({...data, name: e.target.value})}
+                  required
+                />
               </div>
               <div className="mb-5">
                 <Label>Email</Label>
-                <Input placeholder="Employee's Email" required />
+                <Input
+                  placeholder="Employee's Email"
+                  value={data.email}
+                  onChange={(e) => setData({...data, email: e.target.value})}
+                  required
+                />
               </div>
               <div className="mb-5">
                 <Label>Mobile No</Label>
-                <Input placeholder="Employee's Mobile No" required />
+                <Input
+                  type="number"
+                  minLength={10}
+                  placeholder="Employee's Mobile No"
+                  value={data.contact}
+                  onChange={(e) => setData({...data, contact: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="mb-5">
+                <Label>Password</Label>
+                <Input
+                  type="text"
+                  minLength={10}
+                  placeholder="New Password"
+                  value={data.password}
+                  onChange={(e) => setData({...data, password: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="mb-5">
+                <Label>Id Proof</Label>
+                <Input
+                  type="file"
+                  name="document"
+                  // onChange={(e) => {
+                  //   const img = new FormData();
+                  //   img.set("document", e.target.value);
+                  //   console.log(e.target.value);
+                  //   console.log(img);
+                  // }}
+                  placeholder="Adhar/PAN"
+                  value={data.document}
+                  onChange={(e) => setData({...data, document: e.target.value})}
+                  required
+                />
               </div>
               <div className="mb-5">
                 <Label>Age</Label>
-                <Input placeholder="Employee's Age" required />
+                <Input
+                  placeholder="Employee's Age"
+                  value={data.age}
+                  onChange={(e) => setData({...data, age: e.target.value})}
+                  required
+                />
               </div>
               <div className="mb-5">
                 <Label>Gender</Label>
-                <RadioGroup defaultValue="none">
+                <RadioGroup
+                  defaultValue="none"
+                  onChange={(e) => setData({...data, gender: e.target.value})}>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="option-one" id="option-one" />
-                    <Label htmlFor="option-one">Male</Label>
+                    <RadioGroupItem value="male" id="male" />
+                    <Label htmlFor="male">Male</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="option-two" id="option-two" />
-                    <Label htmlFor="option-two">Female</Label>
+                    <RadioGroupItem value="female" id="female" />
+                    <Label htmlFor="female">Female</Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -79,7 +167,7 @@ export default function AddEmpForm() {
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[280px] justify-start text-left font-normal",
+                        "w-full justify-start text-left font-normal",
                         !date && "text-muted-foreground"
                       )}>
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -90,7 +178,10 @@ export default function AddEmpForm() {
                     <Calendar
                       mode="single"
                       selected={date}
-                      onSelect={setDate}
+                      onSelect={(e) => {
+                        setData({...data, joindate: e});
+                        setDate(e);
+                      }}
                       initialFocus
                     />
                   </PopoverContent>
@@ -100,7 +191,7 @@ export default function AddEmpForm() {
               <div className="mb-5 flex flex-col">
                 <Label>Roll</Label>
 
-                <Select>
+                <Select onValueChange={(e) => setData({...data, role: e})}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
@@ -113,12 +204,19 @@ export default function AddEmpForm() {
                 </Select>
               </div>
               <div className="flex gap-5">
-                <Button variant="destructive" className="w-full" >Cancel</Button>
-                <Button variant="default" className="w-full"  >Add</Button>
+                <DialogClose asChild>
+                  <Button variant="destructive" className="w-full">
+                    Cancel
+                  </Button>
+                </DialogClose>
+
+                <Button variant="default" type="submit" className="w-full">
+                  Add
+                </Button>
               </div>
             </form>
           </DialogDescription>
-        </DialogHeader>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

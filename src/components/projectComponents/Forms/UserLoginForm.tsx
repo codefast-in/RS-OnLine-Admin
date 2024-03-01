@@ -32,8 +32,8 @@ function UserLoginForm() {
   const logout = async (e: any) => {
     e.preventDefault();    
     try {
-      const responce = dispatch(removeEmployee());
-      console.log(responce);
+      // const responce = dispatch(removeEmployee());
+      // console.log(responce);
     } catch (error: any) {
       console.log(error.message);
     }

@@ -29,14 +29,13 @@ import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import app from "@/utils/axios";
-export default function AddTaskForm({className}) {
-  const [date, setDate] =
-    (React.useState < DateRange) |
-    (undefined >
-      {
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
-      });
+export default function AddTaskForm({
+  className,
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  });
 
   const [data, setData] = React.useState({
     title: "",
@@ -46,16 +45,17 @@ export default function AddTaskForm({className}) {
     date: new Date(),
   });
 
-  const sendData = async (e) => {
+  const sendData = async (e: any) => {
     e.preventDefault();
     const info = data;
     try {
       const responce = await app.post("/api/employee/signup/", info);
       console.log(responce);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
     }
   };
+
 
   return (
     <Dialog>
@@ -71,22 +71,12 @@ export default function AddTaskForm({className}) {
             <form onSubmit={sendData} className="mt-5">
               <div className="mb-5 gap-3 flex-col flex">
                 <Label>Title</Label>
-                <Input
-                  placeholder="Task Title"
-                  onChange={(e) => setData({...data, title: e.target.value})}
-                  required
-                />
+                <Input placeholder="Task Title" onChange={(e) => setData({...data, title: e.target.value})} required />
               </div>
 
               <div className="mb-5 gap-3 flex flex-col">
                 <Label>Discreption</Label>
-                <Input
-                  placeholder="Task Discreption"
-                  onChange={(e) =>
-                    setData({...data, discreption: e.target.value})
-                  }
-                  required
-                />
+                <Input placeholder="Task Discreption" onChange={(e) => setData({...data, discreption: e.target.value})} required />
               </div>
 
               <div className="mb-5 gap-3 flex flex-col">
@@ -136,7 +126,7 @@ export default function AddTaskForm({className}) {
               <div className="mb-5 gap-3 flex flex-col">
                 <Label>Select Employee</Label>
 
-                <Select onValueChange={(e) => setData({...data, team: e})}>
+                <Select onValueChange={(e)=> setData({...data, team:e})}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Employee" />
                   </SelectTrigger>

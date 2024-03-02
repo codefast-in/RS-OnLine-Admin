@@ -31,7 +31,7 @@ import {Separator} from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function AddRetailerForm() {
-  const [date, setDate] = React.useState();
+  const [date, setDate] = React.useState<Date>();
   return (
     <Dialog>
       <DialogTrigger>

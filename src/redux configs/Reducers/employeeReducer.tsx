@@ -1,14 +1,14 @@
 import {createSlice} from "@reduxjs/toolkit";
-// import type {PayloadAction} from "@reduxjs/toolkit";
+import type {PayloadAction} from "@reduxjs/toolkit";
 
 
-// export interface CounterState {
-//   employee: any;
-//   errors: [];
-//   isLogin: boolean;
-// }
+export interface CounterState {
+  employee: any;
+  errors: [];
+  isLogin: boolean;
+}
 
-const initialState = {
+const initialState: CounterState = {
   employee: null,
   errors: [],
   isLogin: false,
@@ -18,17 +18,17 @@ export const employeeReducer = createSlice({
   name: "employee",
   initialState,
   reducers: {
-    addEmployee: (state, action) => {
+    addEmployee: (state, action: PayloadAction<any>) => {
       console.log(action.payload,state)
       state.employee = action.payload;
       state.isLogin = true;
     },
-    removeEmployee: (state, action) => {
+    removeEmployee: (state, action: PayloadAction<any>) => {
       state.employee = null;
       state.isLogin = false;
      
     },
-    isError: (state, action) => {
+    isError: (state, action: PayloadAction<any>) => {
       state.errors.push(action.payload);
     },
     removeError: (state) => {

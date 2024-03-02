@@ -29,7 +29,7 @@ import {Button} from "@/components/ui/button";
 import app from "@/utils/axios";
 export default function AddExpencForm({
   className,
-}) {
+}: React.HTMLAttributes<HTMLDivElement>) {
   const [data, setData] = React.useState({
     type: "",
     discreption: "",
@@ -38,13 +38,13 @@ export default function AddExpencForm({
     date: new Date(),
   });
 
-  const sendData = async (e) => {
+  const sendData = async (e: any) => {
     e.preventDefault();
     const info = data;
     try {
       const responce = await app.post("/api/employee/signup/", info);
       console.log(responce);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
     }
   };

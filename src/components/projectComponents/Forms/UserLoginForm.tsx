@@ -1,3 +1,6 @@
+'use client'
+
+
 import React, {useState} from "react";
 import {
   Card,
@@ -17,9 +20,12 @@ import {useDispatch} from "react-redux";
 import {asyncLoginEmployee,asynceCurrentEmployee} from "@/redux configs/Actions/employeeAction";
 import {addWeeks} from "date-fns";
 import { removeEmployee } from "@/redux configs/Reducers/employeeReducer";
+import { useRouter } from 'next/navigation';
+
 
 function UserLoginForm() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const changType = () => {
     setVisible(!visible);
@@ -28,6 +34,12 @@ function UserLoginForm() {
     email: "",
     password: "",
   });
+
+const payload = ()=>{
+        router.push('/user');
+
+}
+
 
   const logout = async (e: any) => {
     e.preventDefault();    
@@ -42,9 +54,10 @@ function UserLoginForm() {
     e.preventDefault();
     const info = data;
     try {
-      const responce = dispatch(asyncLoginEmployee(info));
-     
-      // console.log(responce);
+     const responce =  dispatch(asyncLoginEmployee(info));
+
+      //  router.push('/user');
+      console.log(responce);
     } catch (error: any) {
       console.log(error.message);
     }

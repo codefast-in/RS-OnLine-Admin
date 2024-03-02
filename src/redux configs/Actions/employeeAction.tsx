@@ -29,11 +29,12 @@ export const asynceCurrentEmployee =
     }
   };
 
-export const asyncLoginEmployee =
-  (loginData: {}) => async (dispatch: any, getState: any) => {
+export const asyncLoginEmployee:any =
+  (loginData: {}) => async (dispatch: any,getState: any) => {
     try {
       const {data} = await app.post("/api/employee/signin/", loginData);
       console.log(data);
+      // dispatch(addEmployee(data));
       dispatch(asynceCurrentEmployee());
     } catch (error: any) {
       dispatch(isError(error.response.data.message));
@@ -47,7 +48,7 @@ export const asyncLogoutEmployee =
       const {data} = await app.get("/api/employee/signout/");
 
       console.log(data);
-      dispatch(removeEmployee());
+      dispatch(removeEmployee()); 
     } catch (error: any) {
       dispatch(isError(error.response.data.message));
     }

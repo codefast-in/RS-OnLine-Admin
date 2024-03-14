@@ -35,8 +35,10 @@ import {
   LayersIcon,
   TextAlignRightIcon,
 } from "@radix-ui/react-icons";
-import {useTheme} from "next-themes";
-import { useDispatch } from "react-redux";
+
+import {useDispatch} from "react-redux";
+
+import {asyncLogoutEmployee} from "@/redux configs/Actions/employeeAction";
 
 // Data
 const pagesLinks = [
@@ -52,12 +54,22 @@ const pagesLinks = [
 const darkLogo = require("../../assets/img/darklogo.png");
 const lightLogo = require("../../assets/img/lightlogo.png");
 
-export default function UserNavbar() {
+export default function UserNavbar(parms: any) {
   const theme = "dark";
-  const dispatch = useDispatch()
-  const logOut = ()=>{
-    dispatch()
-  }
+  const dispatch = useDispatch();
+  let user = parms.employee.employee;
+  // console.log(user.avatar)
+
+  const logOut = (e: any) => {
+    e.preventDefault();
+    try {
+      const responce = dispatch(asyncLogoutEmployee());
+      console.log(responce);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Card
       className="flex items-center justify-center py-3 md:py-5 sticky top-0 border-x-0 border-t-0 rounded-none z-10 bg-transparent bg-clip-padding"
@@ -111,23 +123,28 @@ export default function UserNavbar() {
               <SheetHeader>
                 <SheetTitle className="flex gap-5">
                   <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarImage src={user ? user.avatar.url : ""} />
                     <AvatarFallback>RS</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col justify-start items-start">
-                    <span>Sachin Pawar</span>
+                    <span className="text-black">{user ? user.name : ""}</span>
                     <span className="text-xs opacity-50 ">
-                      sachinspind@gmail.com
+                      {user ? user.email : ""}
                     </span>
                   </div>
                 </SheetTitle>
               </SheetHeader>
 
               <SheetDescription className="mb-auto flex-col flex gap-3 mt-5 ">
-                <Link href="/user/profile">Profile</Link>
-                <Link href="/user/editprofile">Edit Profile</Link>
-                <Link href="/user/setting">Setting</Link>
-                <Link href="/">Log Out</Link>
+                <Button  variant="ghost" asChild>
+                  <Link href="/user/profile">Profile</Link>
+                </Button>
+
+                {/* <Link href="/user/editprofile">Edit Profile</Link> */}
+                {/* <Link href="/user/setting">Setting</Link> */}
+                <Button onClick={logOut} variant="ghost">
+                  Log Out
+                </Button>
               </SheetDescription>
             </SheetContent>
           </Sheet>
@@ -160,27 +177,31 @@ export default function UserNavbar() {
           <DropdownMenu>
             <DropdownMenuTrigger className="border-none rounded-full">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={user ? user.avatar.url : ""} />
                 <AvatarFallback>RS</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel className="flex flex-col gap-1">
-                <span>Sachin Pawar</span>
+                <span>{user ? user.name : ""}</span>
                 <span className="text-xs opacity-50 ">
-                  sachinspind@gmail.com
+                  {user ? user.email : ""}
                 </span>
               </DropdownMenuLabel>
 
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/user/profile">Profile</Link>
+              </DropdownMenuItem>
 
-              <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+              {/* <DropdownMenuItem>Edit Profile</DropdownMenuItem> */}
 
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem asChild>
-                <Link href="/">Log Out</Link>
+              <DropdownMenuItem onClick={logOut}>
+                {/* <Link href="/" onClick={logOut}> */}
+                Log Out
+                {/* </Link> */}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

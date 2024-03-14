@@ -19,27 +19,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {PlusIcon} from "@radix-ui/react-icons";
+import {Pencil1Icon} from "@radix-ui/react-icons";
 
 import {Input} from "@/components/ui/input";
 import {Label} from "@radix-ui/react-label";
-
-import {addDays, format} from "date-fns";
-import {DateRange} from "react-day-picker";
 
 import {Button} from "@/components/ui/button";
 
 import app from "@/utils/axios";
 import {useToast} from "@/components/ui/use-toast";
-export default function AddIncomeForm({first, setfirst}:any) {
+export default function EditIncomeForm({
+  first,
+  setfirst,
+  title,
+  mrp,
+  rsprice,
+  status,
+  id,
+}: any) {
   const Toast = useToast();
-  const [isFormFill, setisFormFill] = useState(true);
 
   const [data, setData] = React.useState({
-    title: "",
-    mrp: "",
-    rsprice: "",
-    status: "",
+    title: title,
+    mrp: mrp,
+    rsprice: rsprice,
+    status: status,
+    id: id,
   });
 
   const sendData = async (e: any) => {
@@ -47,11 +52,11 @@ export default function AddIncomeForm({first, setfirst}:any) {
     const info = data;
 
     try {
-      const responce = await app.post("/api/employee/addincome/", info);
+      const responce = await app.post("/api/employee/addincom/", info);
       console.log(responce.data);
       Toast.toast({
         variant: "success",
-        title: "Income Added Successfully",
+        title: "Income Edited Successfully",
       });
       setfirst(first + 1);
     } catch (error: any) {
@@ -62,8 +67,8 @@ export default function AddIncomeForm({first, setfirst}:any) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="default" className="ml-auto">
-          Add Income <PlusIcon className="ml-2 h-4 w-4" />
+        <Button variant="outline">
+          <Pencil1Icon className="h-5 w-5" />
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -74,8 +79,9 @@ export default function AddIncomeForm({first, setfirst}:any) {
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Product Name</Label>
                 <Input
-                  placeholder="Name"
+                  placeholder={title}
                   onChange={(e) => setData({...data, title: e.target.value})}
+                  contentEditable={true}
                   required
                 />
               </div>
@@ -83,6 +89,7 @@ export default function AddIncomeForm({first, setfirst}:any) {
                 <Label>Status</Label>
 
                 <Select
+                  defaultValue={status}
                   onValueChange={(e) => setData({...data, status: e})}
                   required>
                   <SelectTrigger className="w-full">
@@ -99,7 +106,7 @@ export default function AddIncomeForm({first, setfirst}:any) {
                 <Label>MRP</Label>
                 <Input
                   type="number"
-                  placeholder="00.0"
+                  placeholder={mrp}
                   onChange={(e) => setData({...data, mrp: e.target.value})}
                   required
                 />
@@ -108,7 +115,7 @@ export default function AddIncomeForm({first, setfirst}:any) {
                 <Label>RS Price</Label>
                 <Input
                   type="number"
-                  placeholder="00.0"
+                  placeholder={rsprice}
                   onChange={(e) => setData({...data, rsprice: e.target.value})}
                   required
                 />
@@ -121,7 +128,7 @@ export default function AddIncomeForm({first, setfirst}:any) {
                   </Button>
                 </DialogClose>
                 <Button variant="default" type="submit" className="w-full">
-                  Add
+                  Save
                 </Button>
               </div>
             </form>

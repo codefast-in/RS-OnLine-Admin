@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   Card,
   CardContent,
@@ -14,23 +14,23 @@ import {EmpListTable} from "@/components/projectComponents/Tables/EmpListTable";
 
 import app from "@/utils/axios";
 import {Button} from "@/components/ui/button";
+import {useDispatch} from "react-redux";
 export default function page() {
-  const sendData = async () => {
+  const [employeesData, setemployeesData] = useState([]);
+  const dispatch = useDispatch();
+
+  const getData = async () => {
     try {
-      const info = {
-        firstname: "Dharmendra",
-        lastname: "patel",
-        password: "1234567",
-        email: "s@gmail.com",
-        contact:'1234567890',
-        joindate:'ergvre'
-      };
-      const data = await app.post("/api/employee/signup/", info);
-      console.log(data);
-    } catch (error: any) {
-      console.log(error.message);
+      const responce = await app.get("/api/admin/allemployee");
+      setemployeesData(responce.data);
+    } catch (error) {
+      console.log(error);
     }
   };
+  console.log(employeesData);
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div className="mr-10 py-5 w-[80%] h-full ">
@@ -85,8 +85,8 @@ export default function page() {
           </CardContent>
         </Card>
       </div>
-      {/* <Button onClick={sendData}>Clik</Button> */}
-      <EmpListTable />
+
+      <EmpListTable employees={employeesData} />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
 
-
 export interface EmployeeState {
   employee: any;
   errors: [string];
@@ -22,10 +21,9 @@ export const employeeReducer = createSlice({
       state.employee = action.payload;
       state.isLogin = true;
     },
-    removeEmployee: (state, ) => {
+    removeEmployee: (state) => {
       state.employee = null;
       state.isLogin = false;
-     
     },
     isError: (state, action: PayloadAction<any>) => {
       state.errors.push(action.payload);
@@ -37,6 +35,7 @@ export const employeeReducer = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {addEmployee, removeEmployee, isError,removeError} = employeeReducer.actions;
+export const {addEmployee, removeEmployee, isError, removeError} =
+  employeeReducer.actions;
 
 export default employeeReducer.reducer;

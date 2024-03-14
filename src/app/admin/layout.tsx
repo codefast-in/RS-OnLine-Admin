@@ -1,24 +1,39 @@
-import type {Metadata} from "next";
+"use client"
+
 import {Inter} from "next/font/google";
 
 import {ThemeProvider} from "@/components/theme-provider";
 
 import Navbar from "@/components/projectComponents/Navbar";
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useRouter} from "next/navigation";
+import {AdminState} from "@/redux configs/Reducers/adminReducer";
+import {asynceCurrentAdmin} from "@/redux configs/Actions/adminActions";
 
 const inter = Inter({subsets: ["latin"]});
-
-const isLogin = false
-
-export const metadata: Metadata = {
-  title: "RS Online Admin",
-  description: "Human Resourse Management System",
-};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const admin = useSelector((state: AdminState) => {
+    return state.admin;
+  });
+// console.log(admin)
+  useEffect(() => {
+    dispatch(asynceCurrentAdmin());
+
+    if (!admin.isLogin) {
+      router.push("/");
+    } else {
+      router.push("/admin");
+    }
+  }, [admin.isLogin]);
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -27,10 +42,10 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange>
-          <Navbar />
+          <Navbar admin={admin.admin} />
           <main className="overflow-hidden">{children}</main>
         </ThemeProvider>
       </body>
     </html>
-  ) 
+  );
 }

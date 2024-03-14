@@ -1,7 +1,7 @@
 import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
-
+import { Toaster } from "@/components/ui/toaster"
 import Wraper from "../components/wraper";
 
 const inter = Inter({subsets: ["latin"]});
@@ -21,6 +21,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className={inter.className} >
         <main className="overflow-hidden">
           <Wraper>{children}</Wraper>
+          <Toaster />
         </main>
       </body>
     </html>

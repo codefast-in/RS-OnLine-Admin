@@ -6,8 +6,12 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import AdminLoginForm from "@/components/projectComponents/Forms/AdminLoginForm";
 import UserLoginForm from "@/components/projectComponents/Forms/UserLoginForm";
 
-import {useDispatch} from "react-redux";
-export default function Page() {
+import {useDispatch, useSelector} from "react-redux";
+import {EmployeeState} from "@/redux configs/Reducers/employeeReducer";
+import {useToast} from "@/components/ui/use-toast";
+
+export default function Page() { 
+
   return (
     <div className="flex h-screen flex-col items-center justify-center sm:p-12  md:p-24  bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900 ">
       <div className="p-1 border-0 w-auto flex items-center justify-center">
@@ -22,7 +26,7 @@ export default function Page() {
               <TabsTrigger value="admin">Admin</TabsTrigger>
               <TabsTrigger value="Employee">Employee</TabsTrigger>
             </TabsList>
-            <TabsContent value="admin" >
+            <TabsContent value="admin">
               <div>
                 <AdminLoginForm />
               </div>

@@ -11,117 +11,133 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
+
 import {Separator} from "@/components/ui/separator";
 import {TargetIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import dayjs from "dayjs";
-import app from "@/utils/axios";
+import {useSelector} from "react-redux";
+import {EmployeeState} from "@/redux configs/Reducers/employeeReducer";
 
 const empPr = require("@/assets/img/profilepic1.jpg");
 const cardData = [
   {cardtitle: "Totale Income", value: 52},
   {cardtitle: "Complited Tasks", value: 30},
-  {cardtitle: "Leaves", value: 7},
 ];
 
-const absentDays = [dayjs("2024-03-15").toDate(), dayjs("2024-03-10").toDate()];
-const absentStyle = {backgroundColor: "#ff0a0a", color: "#fff"};
-const halfDays = [dayjs("2024-03-05").toDate(), dayjs("2024-03-01").toDate()];
-const halfDaysStyle = {backgroundColor: "#f4d134", color: "#000"};
-const holyDays = [dayjs("2024-03-12").toDate(), dayjs("2024-03-14").toDate()];
-const holyDaysStyle = {backgroundColor: "#f57200", color: "#fff"};
-const presentDays = [dayjs("2024-3-25").toDate(), dayjs("2024-3-20").toDate()];
-const presentDaysStyle = {backgroundColor: "#2eb800", color: "#fff"};
-
-function Page({params}: any) {
-  
-  const [employeeData, setEmployeeData] = useState(null);
-  
+function Page({props}: any) {
   const initialDays: Date[] = [
     dayjs("2024-03-25").toDate(),
     dayjs("2024-03-20").toDate(),
   ];
-  const [days, setDays] = React.useState<Date[] | undefined>(initialDays);
-  // console.log(days);
-  
-  const getData = async () => {
-    try {
-     const apiID = params.empProfile
-      const responce = await app.get(`/api/admin/oneemployee/${apiID}`);
-      setEmployeeData(responce.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  console.log(employeeData);
-  useEffect(() => {
-    getData();
-  }, []);
 
+  const [days, setDays] = React.useState<Date[] | undefined>(initialDays);
+
+  const {employee} = useSelector((state: EmployeeState) => {
+    return state.employee;
+  });
+
+  console.log(employee);
+
+  const absentDays: Array<Date> = [];
+  employee &&
+    employee.attendance.leaves.map((date: string) =>
+      absentDays.push(dayjs(date).toDate())
+    );
+  const absentStyle = {
+    backgroundColor: "#ff0a0a",
+    color: "#fff",
+    borderRadius:"50px"
+  };
+  const halfDays: Array<Date> = [];
+  employee &&
+    employee.attendance.halfdays.map((date: string) =>
+      halfDays.push(dayjs(date).toDate())
+    );
+  const halfDaysStyle = {
+    backgroundColor: "#f4d134",
+    color: "#000",
+    borderRadius:"50px"
+  };
+  const holyDays: Array<Date> = [];
+  employee &&
+    employee.attendance.holidays.map((date: string) =>
+      holyDays.push(dayjs(date).toDate())
+    );
+  const holyDaysStyle = {
+    backgroundColor: "#f57200",
+    color: "#fff",
+    borderRadius:"50px"
+  };
+
+  const presentDays: Array<Date> = [];
+  employee &&
+    employee.attendance.presents.map((date: string) =>
+      presentDays.push(dayjs(date).toDate())
+    );
+
+  const presentDaysStyle = {
+    backgroundColor: "#2eb800",
+    color: "#fff",
+    borderRadius:"50px"
+  };
   return (
-    <Card className="mt-5 w-[80%]">
+    <Card className="mt-3">
       <CardHeader>
         <CardTitle>Employee Details</CardTitle>
         <CardDescription>View Full Details Of Employee Name</CardDescription>
       </CardHeader>
       <div>
-        <CardContent className="flex items-center gap-20">
+        <CardContent className="flex items-start flex-col gap-5">
           <Image
-            src={empPr}
+            src={employee ? employee.avatar.url : ""}
             alt="employee name"
             width={1000}
             height={1000}
             className="rounded-full w-28 h-28"
           />
           <div>
-            <div className="flex justify-start items-center gap-2">
+            <div className="flex justify-start items-center  gap-2">
               <span className="font-semibold text-lg  min-w-[30%]">Name :</span>
-              <span> Sachin Pawar</span>
+              <span className="capitalize"> {employee ? employee.name : ""}</span>
             </div>
             <div className="flex justify-start items-center gap-2">
               <span className="font-semibold text-lg  min-w-[30%]">
                 Email :
               </span>
               <Link href="mailto:sachinspindofficial@gmail.com">
-                sachinspindofficial@gmail.com
+                {employee ? employee.email : ""}
               </Link>
             </div>
             <div className="flex justify-start items-center gap-2">
               <span className="font-semibold text-lg  min-w-[30%]">
                 Mobile :
               </span>
-              <Link href="tel:9516905325">9516905325</Link>
+              <Link href="tel:9516905325">
+                {employee ? employee.contact : ""}
+              </Link>
             </div>
-          </div>
-          <div>
+
             <div className="flex justify-start items-center gap-2">
-              <span className="font-semibold text-lg  min-w-[30%]">Roll :</span>
-              <span>Team Lead</span>
+              <span className="font-semibold text-lg  min-w-[30%]">Role :</span>
+              <span className="capitalize" >{employee ? employee.role : ""}</span>
             </div>
-            <div className="flex justify-start items-center gap-2">
-              <span className="font-semibold text-lg  min-w-[30%]">
-                Status :
-              </span>
-              <span className="text-green-500">Active</span>
-            </div>
+
             <div className="flex justify-start items-center gap-2">
               <span className="font-semibold text-lg  min-w-[30%]">
                 Login @ :
               </span>
-              <span>10:24 AM</span>
+              <span>
+                {employee
+                  ?( dayjs(
+                      employee.logs[employee.logs.length - 1].logintime
+                    ).get("hours")+":"+dayjs(
+                      employee.logs[employee.logs.length - 1].logintime
+                    ).get("minutes"))
+                  : ""}
+              </span>
             </div>
           </div>
         </CardContent>
@@ -132,7 +148,7 @@ function Page({params}: any) {
         <CardDescription>All tasks and work details</CardDescription>
       </CardHeader>
       <div className="mt-5 p-0">
-        <CardContent className="flex items-center gap-5 justify-between">
+        <CardContent className="flex items-center gap-5 justify-between flex-col">
           {cardData.map((card, index) => (
             <Card key={index} className="w-full">
               <CardHeader>
@@ -149,31 +165,35 @@ function Page({params}: any) {
             </Card>
           ))}
         </CardContent>
+        <CardHeader>
+          <CardTitle className="my-3">Attendance</CardTitle>
+        </CardHeader>
         <CardContent className="flex flex-col justify-start items-start">
-          <CardTitle className="my-3">Absent Days</CardTitle>
-
-          <Calendar
-            mode="multiple"
-            min={1}
-            fromYear={2015}
-            toYear={dayjs("2024-03-25").year()}
-            modifiers={{
-              absent: absentDays,
-              halfDays: halfDays,
-              holyDays: holyDays,
-              presentDays: presentDays,
-            }}
-            modifiersStyles={{
-              absent: absentStyle,
-              halfDays: halfDaysStyle,
-              holyDays: holyDaysStyle,
-              presentDays: presentDaysStyle,
-            }}
-          />
+          <Card className="w-full">
+            <Calendar
+              className="w-full px-10"
+              mode="multiple"
+              min={1}
+              fromYear={2015}
+              toYear={dayjs("2024-03-25").year()}
+              modifiers={{
+                absent: absentDays,
+                halfDays: halfDays,
+                holyDays: holyDays,
+                presentDays: presentDays,
+              }}
+              modifiersStyles={{
+                absent: absentStyle,
+                halfDays: halfDaysStyle,
+                holyDays: holyDaysStyle,
+                presentDays: presentDaysStyle,
+              }}
+            />
+          </Card>
         </CardContent>
       </div>
 
-      <div className="mt-5 p-0">
+      {/* <div className="mt-5 p-0">
         <CardContent>
           <Dialog>
             <DialogTrigger asChild>
@@ -211,7 +231,7 @@ function Page({params}: any) {
             </DialogContent>
           </Dialog>
         </CardContent>
-      </div>
+      </div> */}
     </Card>
   );
 }

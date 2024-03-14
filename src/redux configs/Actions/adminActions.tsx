@@ -1,16 +1,12 @@
 import app from "@/utils/axios";
-import {
-  addEmployee,
-  removeEmployee,
-  isError,
-  removeError,
-} from "../Reducers/employeeReducer";
+
+import { addAdmin,removeAdmin,isError,removeError } from "../Reducers/adminReducer";
 
 
-export const asyncAddEmployee =
-  (employee: {}) => async (dispatch: any, getState: any) => {
+export const asyncAddAdmin =
+  (admin: {}) => async (dispatch: any, getState: any) => {
     try {
-      const {data} = await app.post("/api/employee/signup/", employee);
+      const {data} = await app.post("/api/admin/signup/", admin);
       // console.log(data);
     } catch (error: any) {
       console.log(error.response.data.message);
@@ -18,37 +14,37 @@ export const asyncAddEmployee =
     }
   };
 
-export const asynceCurrentEmployee =
+export const asynceCurrentAdmin =
   () => async (dispatch: any, getState: any) => {
     try {
-      const data = await app.post("/api/employee/current/");
+      const data = await app.post("/api/admin/current/");
       // console.log(data);
-      dispatch(addEmployee(data.data));
+      dispatch(addAdmin(data.data));
     } catch (error: any) {
       dispatch(isError(error.response.data.message));
       console.log(error.response.data.message);
     }
   };
 
-export const asyncLoginEmployee: any =
+export const asyncLoginAdmin: any =
   (loginData: {}) => async (dispatch: any, getState: any) => {
     try {
-      const {data} = await app.post("/api/employee/signin/", loginData);
+      const {data} = await app.post("/api/admin/signin/", loginData);
 
-      dispatch(asynceCurrentEmployee());
+      dispatch(asynceCurrentAdmin());
     } catch (error: any) {
       dispatch(isError(error.response.data.message));
       console.log(error.response.data.message);
     }
   };
 
-export const asyncLogoutEmployee =
+export const asyncLogoutAdmin =
   () => async (dispatch: any, getState: any) => {
     try {
-      const {data} = await app.get("/api/employee/signout/");
+      const {data} = await app.get("/api/admin/signout/");
 
       console.log(data);
-      dispatch(removeEmployee());
+      dispatch(removeAdmin());
       dispatch(removeError());
     } catch (error: any) {
       dispatch(isError(error.response.data.message));

@@ -54,7 +54,7 @@ export default function AddExpencForm({
     <Dialog>
       <DialogTrigger>
         <Button variant="default" className="ml-auto">
-          Add New Expencese <PlusIcon className="ml-2 h-4 w-4" />
+          Add Expencese <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>

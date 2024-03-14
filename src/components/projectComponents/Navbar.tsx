@@ -49,9 +49,25 @@ const pagesLinks = [
 
 import darkLogo from "@/assets/img/darklogo.png";
 import lightLogo from "@/assets/img/lightlogo.png";
+import {asyncLogoutAdmin} from "@/redux configs/Actions/adminActions";
+import {useDispatch} from "react-redux";
+import {usePathname} from "next/navigation";
 
-export default function Navbar() {
+export default function Navbar({admin}: any) {
   const theme = "dark";
+  const pathName = usePathname();
+  const dispatch = useDispatch();
+
+  const logOut = (e: any) => {
+    e.preventDefault();
+    try {
+      const responce = dispatch(asyncLogoutAdmin());
+      console.log(responce);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Card
       className="flex items-center justify-center py-5 0 sticky top-0 border-x-0 border-t-0 rounded-none z-50"
@@ -60,16 +76,19 @@ export default function Navbar() {
         <Image
           height={100}
           width={100}
-          src={ lightLogo}
+          src={lightLogo}
           alt="RS Logo"
           className="h-10 w-10"
         />
         <div className="lg:block hidden ">
-          {pagesLinks.map((link, index) => (
-            <Button key={index} asChild variant="ghost" size="sm">
-              <Link href={`/admin${link.path}`}>{link.label}</Link>
-            </Button>
-          ))}
+          {pagesLinks.map((link, index) => {
+             const isActive = pathName.endsWith(link.path);
+            return (
+              <Button key={index} asChild variant={isActive ? "link" : "ghost"} size="sm">
+                <Link href={`/admin${link.path}`}>{link.label}</Link>
+              </Button>
+            );
+          })}
         </div>
 
         <div className="flex justify-between items-center lg:gap-3">
@@ -91,20 +110,30 @@ export default function Navbar() {
                     <AvatarFallback>RS</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col justify-start items-start">
-                    <span>Sachin Pawar</span>
+                    <span>{admin ? admin.name : ""}</span>
                     <span className="text-xs opacity-50 ">
-                      sachinspind@gmail.com
+                      {admin ? admin.email : ""}
                     </span>
                   </div>
                 </SheetTitle>
               </SheetHeader>
 
               <SheetDescription className="mb-auto flex-col flex gap-3 mt-5 justify-start items-start ">
-                {pagesLinks.map((link, index) => (
-                  <Button key={index} asChild variant="ghost" size="sm" >
-                    <Link href={`/admin${link.path}`}>{link.label}</Link>
-                  </Button>
-                ))}
+                {pagesLinks.map((link, index) => {
+                  const isActive = pathName.endsWith(link.path);
+                  return (
+                    <Button
+                      key={index}
+                      asChild
+                      variant={isActive ? "link" : "ghost"}
+                      className="w-full items-start justify-start">
+                      <Link href={`/admin${link.path}`}>{link.label}</Link>
+                    </Button>
+                  );
+                })}
+                <Button onClick={logOut} className="text-start" variant="ghost">
+                  Log Out
+                </Button>
               </SheetDescription>
             </SheetContent>
           </Sheet>
@@ -117,9 +146,9 @@ export default function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel className="flex flex-col gap-1">
-                <span>Supyar Meena</span>
+                <span> {admin ? admin.name : ""}</span>
                 <span className="text-xs opacity-50 ">
-                  supyarmeena11@gmail.com
+                  {admin ? admin.email : ""}
                 </span>
               </DropdownMenuLabel>
 
@@ -128,9 +157,7 @@ export default function Navbar() {
               <DropdownMenuItem>Edit Profile</DropdownMenuItem>
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem asChild>
-                <Link href="/">Log Out</Link>
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={logOut}>Log Out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Card,
   CardContent,
@@ -18,13 +18,58 @@ import {
 import Link from "next/link";
 import SwichMode from "@/components/swichMode";
 import {Button} from "@/components/ui/button";
+import {useToast} from "@/components/ui/use-toast";
+import {useDispatch, useSelector} from "react-redux";
+import {useRouter} from "next/navigation";
+import {AdminState} from "@/redux configs/Reducers/adminReducer";
+import {asyncLoginAdmin} from "@/redux configs/Actions/adminActions";
 
 function AdminLoginForm() {
   const [visible, setVisible] = useState(false);
-
   const changType = () => {
     setVisible(!visible);
   };
+
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [data, setData] = React.useState({
+    email: "",
+    password: "",
+  });
+
+  const {isLogin, errors} = useSelector((state: AdminState) => {
+    return state.admin;
+  });
+
+  const sendData = async (e: any) => {
+    e.preventDefault();
+    const info = data;
+
+    try {
+      dispatch(asyncLoginAdmin(info));
+    } catch (error: any) {
+      console.log(error);
+
+      toast.toast({
+        title: "Invalid Email/Password",
+      });
+    }
+  };
+
+
+
+  useEffect(() => {
+    !isLogin ? router.push("/") : router.push("/admin/");
+
+    errors.length != 1
+      ? toast.toast({
+          variant: "destructive",
+          title: errors[errors.length - 1],
+        })
+      : "";
+  }, [isLogin, errors]);
+
   return (
     <Card>
       <CardHeader>
@@ -36,17 +81,23 @@ function AdminLoginForm() {
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="space-y-1">
-          <Label htmlFor="name">User id /Email</Label>
-          <Input id="name" placeholder="example@mail.com" />
+          <Label htmlFor="email">User id /Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="example@mail.com"
+            onChange={(e) => setData({...data, email: e.target.value})}
+          />
         </div>
         <div className="space-y-1">
-          <Label htmlFor="username">Password</Label>
+          <Label htmlFor="password">Password</Label>
           <div className="relative w-full">
             <Input
-              id="username"
+              id="password"
               type={visible ? "text" : "password"}
               placeholder="Your PassWord"
               className="pr-12 pl-4"
+              onChange={(e) => setData({...data, password: e.target.value})}
             />
             {visible ? (
               <EyeOpenIcon
@@ -63,11 +114,8 @@ function AdminLoginForm() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" asChild>
-          <div>
-            <Link href="/admin">Login</Link>
-            <ArrowRightIcon className="ml-2 h-4 w-4" />
-          </div>
+        <Button className="w-full" onClick={sendData}>
+          Login
         </Button>
       </CardFooter>
     </Card>

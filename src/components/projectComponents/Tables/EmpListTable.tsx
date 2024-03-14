@@ -45,71 +45,71 @@ import {ScrollArea} from "@/components/ui/scroll-area";
 import AddEmpForm from "../Forms/addEmpForm";
 import Link from "next/link";
 
-const data: Employees[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    name: "Sachin Pawar",
-    empID: "RS-001",
-    roll: "head",
-    status: "present",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    name: "Sandeep Pawar",
-    empID: "RS-002",
-    roll: "head",
-    status: "absent",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    name: "Karan Pawar",
-    empID: "RS-003",
-    roll: "employee",
-    status: "onleave",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    name: "Manish Pawar",
-    empID: "RS-004",
-    roll: "manager",
-    status: "present",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    name: "Pankaj Pawar",
-    empID: "RS-005",
-    roll: "manager",
-    status: "present",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj5p",
-    amount: 821,
-    name: "Sataym Pawar",
-    empID: "RS-006",
-    roll: "manager",
-    status: "present",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj6p",
-    amount: 621,
-    name: "Aakash Pawar",
-    empID: "RS-007",
-    roll: "manager",
-    status: "present",
-    email: "carmella@hotmail.com",
-  },
-];
+// const data: Employees[] = [
+//   {
+//     id: "m5gr84i9",
+//     amount: 316,
+//     name: "Sachin Pawar",
+//     empID: "RS-001",
+//     roll: "head",
+//     status: "present",
+//     email: "ken99@yahoo.com",
+//   },
+//   {
+//     id: "3u1reuv4",
+//     amount: 242,
+//     name: "Sandeep Pawar",
+//     empID: "RS-002",
+//     roll: "head",
+//     status: "absent",
+//     email: "Abe45@gmail.com",
+//   },
+//   {
+//     id: "derv1ws0",
+//     amount: 837,
+//     name: "Karan Pawar",
+//     empID: "RS-003",
+//     roll: "employee",
+//     status: "onleave",
+//     email: "Monserrat44@gmail.com",
+//   },
+//   {
+//     id: "5kma53ae",
+//     amount: 874,
+//     name: "Manish Pawar",
+//     empID: "RS-004",
+//     roll: "manager",
+//     status: "present",
+//     email: "Silas22@gmail.com",
+//   },
+//   {
+//     id: "bhqecj4p",
+//     amount: 721,
+//     name: "Pankaj Pawar",
+//     empID: "RS-005",
+//     roll: "manager",
+//     status: "present",
+//     email: "carmella@hotmail.com",
+//   },
+//   {
+//     id: "bhqecj5p",
+//     amount: 821,
+//     name: "Sataym Pawar",
+//     empID: "RS-006",
+//     roll: "manager",
+//     status: "present",
+//     email: "carmella@hotmail.com",
+//   },
+//   {
+//     id: "bhqecj6p",
+//     amount: 621,
+//     name: "Aakash Pawar",
+//     empID: "RS-007",
+//     roll: "manager",
+//     status: "present",
+//     email: "carmella@hotmail.com",
+//   },
+// ];
 
 export type Employees = {
   id: string;
@@ -117,33 +117,33 @@ export type Employees = {
   empID: string;
   email: string;
   roll: "employee" | "head" | "manager" | "new";
-  status: "present" | "absent" | "onleave";
+  status: "online" | "offline" ;
   amount: number;
 };
 
 export const columns: ColumnDef<Employees>[] = [
-  {
-    id: "select",
-    header: ({table}) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({row}) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select", 
+  //   header: ({table}) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({row}) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "name",
     header: ({column}) => {
@@ -157,7 +157,7 @@ export const columns: ColumnDef<Employees>[] = [
         </Button>
       );
     },
-    cell: ({row}) => <div className="lowercase">{row.getValue("name")}</div>,
+    cell: ({row}) => <div className="capitalize">{row.getValue("name")}</div>,
   },
 
   {
@@ -177,9 +177,9 @@ export const columns: ColumnDef<Employees>[] = [
   },
 
   {
-    accessorKey: "roll",
+    accessorKey: "role",
     header: "Roll",
-    cell: ({row}) => <div className="capitalize">{row.getValue("roll")}</div>,
+    cell: ({row}) => <div className="capitalize">{row.getValue("role")}</div>,
   },
   {
     accessorKey: "status",
@@ -229,12 +229,12 @@ export const columns: ColumnDef<Employees>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Employees.empID)}>
+              onClick={() => navigator.clipboard.writeText(Employees._id)}>
               Copy Employees ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
-            <DropdownMenuItem asChild><Link href={`/admin/employees/${Employees.empID}`}>View Employees details</Link></DropdownMenuItem>
+            <DropdownMenuItem asChild><Link href={`/admin/employees/${Employees._id}`}>View Employees details</Link></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -242,7 +242,10 @@ export const columns: ColumnDef<Employees>[] = [
   },
 ];
 
-export function EmpListTable() {
+export function EmpListTable({employees}:any) {
+
+const data = employees;
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

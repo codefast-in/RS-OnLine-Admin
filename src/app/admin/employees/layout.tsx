@@ -1,21 +1,25 @@
-import React from 'react'
-import SideBar from '@/components/projectComponents/SideBar'
+
+import React, {useEffect} from "react";
+import SideBar from "@/components/projectComponents/SideBar";
+import {useDispatch} from "react-redux";
+import app from "@/utils/axios";
 
 const linksData = [
-    {label: "Employees", path: "/admin/employees"},
-    {label: "Tasks", path: "/admin/employees/tasks"},
-    {label: "Leave Requests", path: "/admin/employees/leave"},
-
-  ];
+  {label: "Employees", path: "/admin/employees"},
+  {label: "Tasks", path: "/admin/employees/tasks"},
+  {label: "Leave Requests", path: "/admin/employees/leave"},
+];
 export default function layout({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) {
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  
+
   return (
-    <div className='flex w-screen items-start justify- gap-10'>
-          <SideBar links={linksData} />
+    <div className="flex w-screen items-start justify- gap-10">
+      <SideBar links={linksData} />
       {children}
     </div>
-  )
+  );
 }

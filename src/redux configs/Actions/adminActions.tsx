@@ -3,7 +3,7 @@ import app from "@/utils/axios";
 import { addAdmin,removeAdmin,isError,removeError } from "../Reducers/adminReducer";
 
 
-export const asyncAddAdmin =
+export const asyncAddAdmin:any =
   (admin: {}) => async (dispatch: any, getState: any) => {
     try {
       const {data} = await app.post("/api/admin/signup/", admin);
@@ -14,7 +14,7 @@ export const asyncAddAdmin =
     }
   };
 
-export const asynceCurrentAdmin =
+export const asynceCurrentAdmin:any =
   () => async (dispatch: any, getState: any) => {
     try {
       const data = await app.post("/api/admin/current/");
@@ -38,7 +38,7 @@ export const asyncLoginAdmin: any =
     }
   };
 
-export const asyncLogoutAdmin =
+export const asyncLogoutAdmin:any =
   () => async (dispatch: any, getState: any) => {
     try {
       const {data} = await app.get("/api/admin/signout/");

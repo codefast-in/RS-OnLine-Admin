@@ -49,7 +49,7 @@ function Page({props}: any) {
   const absentStyle = {
     backgroundColor: "#ff0a0a",
     color: "#fff",
-    borderRadius:"50px"
+    borderRadius: "50px",
   };
   const halfDays: Array<Date> = [];
   employee &&
@@ -59,7 +59,7 @@ function Page({props}: any) {
   const halfDaysStyle = {
     backgroundColor: "#f4d134",
     color: "#000",
-    borderRadius:"50px"
+    borderRadius: "50px",
   };
   const holyDays: Array<Date> = [];
   employee &&
@@ -69,7 +69,7 @@ function Page({props}: any) {
   const holyDaysStyle = {
     backgroundColor: "#f57200",
     color: "#fff",
-    borderRadius:"50px"
+    borderRadius: "50px",
   };
 
   const presentDays: Array<Date> = [];
@@ -81,16 +81,19 @@ function Page({props}: any) {
   const presentDaysStyle = {
     backgroundColor: "#2eb800",
     color: "#fff",
-    borderRadius:"50px"
+    borderRadius: "50px",
   };
   return (
     <Card className="mt-3">
       <CardHeader>
         <CardTitle>Employee Details</CardTitle>
-        <CardDescription>View Full Details Of Employee Name</CardDescription>
+        <CardDescription>
+          View Full Details Of
+          <span className="capitalize"> {employee ? employee.name : ""}</span>
+        </CardDescription>
       </CardHeader>
       <div>
-        <CardContent className="flex items-start flex-col gap-5">
+        <CardContent className="flex items-start  gap-5">
           <Image
             src={employee ? employee.avatar.url : ""}
             alt="employee name"
@@ -101,7 +104,9 @@ function Page({props}: any) {
           <div>
             <div className="flex justify-start items-center  gap-2">
               <span className="font-semibold text-lg  min-w-[30%]">Name :</span>
-              <span className="capitalize"> {employee ? employee.name : ""}</span>
+              <span className="capitalize">
+                {employee ? employee.name : ""}
+              </span>
             </div>
             <div className="flex justify-start items-center gap-2">
               <span className="font-semibold text-lg  min-w-[30%]">
@@ -122,7 +127,9 @@ function Page({props}: any) {
 
             <div className="flex justify-start items-center gap-2">
               <span className="font-semibold text-lg  min-w-[30%]">Role :</span>
-              <span className="capitalize" >{employee ? employee.role : ""}</span>
+              <span className="capitalize">
+                {employee ? employee.role : ""}
+              </span>
             </div>
 
             <div className="flex justify-start items-center gap-2">
@@ -131,11 +138,13 @@ function Page({props}: any) {
               </span>
               <span>
                 {employee
-                  ?( dayjs(
+                  ? dayjs(
                       employee.logs[employee.logs.length - 1].logintime
-                    ).get("hours")+":"+dayjs(
+                    ).get("hours") +
+                    ":" +
+                    dayjs(
                       employee.logs[employee.logs.length - 1].logintime
-                    ).get("minutes"))
+                    ).get("minutes")
                   : ""}
               </span>
             </div>

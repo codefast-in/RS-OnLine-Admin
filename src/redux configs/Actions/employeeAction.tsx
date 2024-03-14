@@ -4,10 +4,12 @@ import {
   removeEmployee,
   isError,
   removeError,
+  EmployeeState,
 } from "../Reducers/employeeReducer";
+import { AppDispatch } from "../store";
 
 
-export const asyncAddEmployee =
+export const asyncAddEmployee:any =
   (employee: {}) => async (dispatch: any, getState: any) => {
     try {
       const {data} = await app.post("/api/employee/signup/", employee);
@@ -18,8 +20,8 @@ export const asyncAddEmployee =
     }
   };
 
-export const asynceCurrentEmployee =
-  () => async (dispatch: any, getState: any) => {
+export const asynceCurrentEmployee:any =
+  () => async (dispatch:AppDispatch, getState: any) => {
     try {
       const data = await app.post("/api/employee/current/");
       // console.log(data);
@@ -30,8 +32,8 @@ export const asynceCurrentEmployee =
     }
   };
 
-export const asyncLoginEmployee: any =
-  (loginData: {}) => async (dispatch: any, getState: any) => {
+export const asyncLoginEmployee:any =
+  (loginData: {}) => async (dispatch:AppDispatch, getState: any) => {
     try {
       const {data} = await app.post("/api/employee/signin/", loginData);
 
@@ -42,8 +44,8 @@ export const asyncLoginEmployee: any =
     }
   };
 
-export const asyncLogoutEmployee =
-  () => async (dispatch: any, getState: any) => {
+export const asyncLogoutEmployee:any =
+  () => async (dispatch: AppDispatch, getState: any) => {
     try {
       const {data} = await app.get("/api/employee/signout/");
 

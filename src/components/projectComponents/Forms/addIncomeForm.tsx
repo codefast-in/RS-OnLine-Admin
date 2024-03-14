@@ -91,6 +91,8 @@ export default function AddIncomeForm({first, setfirst}:any) {
                   <SelectContent>
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="paid">Paid</SelectItem>
+                    <SelectItem value="return">Return</SelectItem>
+
                   </SelectContent>
                 </Select>
               </div>

@@ -13,11 +13,10 @@ import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined
 import {EmpListTable} from "@/components/projectComponents/Tables/EmpListTable";
 
 import app from "@/utils/axios";
-import {Button} from "@/components/ui/button";
-import {useDispatch} from "react-redux";
+
 export default function page() {
   const [employeesData, setemployeesData] = useState([]);
-  const dispatch = useDispatch();
+
 
   const getData = async () => {
     try {

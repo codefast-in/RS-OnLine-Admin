@@ -42,7 +42,7 @@ export default function AddTaskForm({
     discreption: "",
     team: "",
     status: "",
-    date: new Date(),
+    date: date,
   });
 
   const sendData = async (e: any) => {

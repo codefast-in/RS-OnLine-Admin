@@ -69,13 +69,13 @@ const tasks = [
   },
 ];
 
-tasks.toReversed();
+
 
 export default function page() {
   const [first, setfirst] = useState(1);
 
   const {employee} = useSelector((state: EmployeeState) => state.employee);
-  const services = employee && employee.services.toReversed();
+  const services = employee && employee.services;
 
   const dispatch = useDispatch();
   let totalIncome = 0;

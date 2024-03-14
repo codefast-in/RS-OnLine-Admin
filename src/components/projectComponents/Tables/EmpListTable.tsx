@@ -112,7 +112,7 @@ import Link from "next/link";
 // ];
 
 export type Employees = {
-  id: string;
+  _id: string;
   name: string;
   empID: string;
   email: string;

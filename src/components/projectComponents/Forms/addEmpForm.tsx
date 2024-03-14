@@ -149,7 +149,9 @@ export default function AddEmpForm() {
                 <Label>Gender</Label>
                 <RadioGroup
                   defaultValue="none"
-                  onChange={(e) => setData({...data, gender: e.target.value})}>
+                  onValueChange={(e) =>{ 
+                    console.log(e),
+                    setData({...data, gender: e })}}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="male" id="male" />
                     <Label htmlFor="male">Male</Label>

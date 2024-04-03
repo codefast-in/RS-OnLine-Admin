@@ -1,14 +1,13 @@
 "use client";
 
 import * as React from "react";
-const dayjs = require("dayjs");
-
 import {
   CaretSortIcon,
   ChevronDownIcon,
   DotsHorizontalIcon,
-
+  PlusIcon,
 } from "@radix-ui/react-icons";
+const dayjs = require("dayjs");
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -44,38 +43,24 @@ import {
 } from "@/components/ui/table";
 import {ScrollArea} from "@/components/ui/scroll-area";
 
+import AddEmpForm from "../Forms/addEmpForm";
+import AddIncomeForm from "../Forms/addIncomeForm";
+import EditIncomeForm from "../Forms/editIncomeForm";
 
-import AddExpencForm from "../Forms/addExpencForm";
 
-const data: Employees[] = [
-  {
-    id: "m5gr84i9",
-    type: "Tea",
-    empName: "Sachin Pawar",
-    date: dayjs().format("DD MMM,YYYY"),
-    status: "paid",   
-    amount: 316,
-  },
-  {
-    id: "m5gr74i9",
-    type: "petrol",
-    empName: "Shivam thakur",
-    date: dayjs().format("DD MMM,YYYY"),
-    status: "remaining",   
-    amount: 316,
-  },
-];
 
-export type Employees = {
-  id: string;
-  type: string;
-  empName: string; 
-  date: Date;
-  status: "paid" | "remaining";
-  amount: number;
+export type Income = {
+  _id: string;
+  mrp: number;
+  status: "paid" | "pending";
+  addtime: string;
+  employee: string;
+ 
+  rsprice: number;
+  title: string;
 };
 
-export const columns: ColumnDef<Employees>[] = [
+export const columns: ColumnDef<Income>[] = [
   {
     id: "select",
     header: "No.",
@@ -87,50 +72,69 @@ export const columns: ColumnDef<Employees>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "type",
+    accessorKey: "title",
     header: ({column}) => {
       return (
         <Button
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Type
+          Name
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({row}) => <div className="capitalize">{row.getValue("type")}</div>,
+    cell: ({row}) => (
+      <div className="capitalize">{row.getValue("title")}</div>
+    ),
+  },
+  {
+    accessorKey: "employee",
+    header: ({column}) => {
+      
+      return (
+        <Button
+          variant="tableHead"
+          className="px-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+         Employee
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({row}:any) => (
+      <div className="capitalize">{row.getValue("employee").name}</div>
+    ),
   },
 
-  
-
+ 
   {
-    accessorKey: "empName",
-    header: "Employee Name",
-    cell: ({row}) => <div className="capitalize">{row.getValue("empName")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({row}) => <div className="capitalize">{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "date",
+    accessorKey: "mrp",
     header: ({column}) => {
       return (
         <Button
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-         Date
+          M.R.P.
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({row}) => <div className="capitalize">{row.getValue("date")}</div>,
+    cell: ({row}) => {
+      const rsPrice = parseFloat(row.getValue("mrp"));
+
+      // Format the rsPrice as a dollar rsPrice
+      const formatted = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+      }).format(rsPrice);
+
+      return <div className="text-start font-medium">{formatted}</div>;
+    },
   },
   {
-    accessorKey: "amount",
+    accessorKey: "rsprice",
     header: ({column}) => {
       return (
         <Button
@@ -143,52 +147,56 @@ export const columns: ColumnDef<Employees>[] = [
       );
     },
     cell: ({row}) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const rsPrice = parseFloat(row.getValue("rsprice"));
 
-      // Format the amount as a dollar amount
+      // Format the rsPrice as a dollar rsPrice
       const formatted = new Intl.NumberFormat("en-IN", {
         style: "currency",
         currency: "INR",
-      }).format(amount);
+      }).format(rsPrice);
 
       return <div className="text-start font-medium">{formatted}</div>;
     },
   },
-
   {
-    id: "actions",
-    enableHiding: false,
-    cell: ({row}) => {
-      const Employees = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            {/* <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Employees.empID)}>
-              Copy Employees ID
-            </DropdownMenuItem> */}
-            <DropdownMenuSeparator />
-            {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
-            <DropdownMenuItem>Mark as paid</DropdownMenuItem>
-            <DropdownMenuItem>View Expencese details</DropdownMenuItem>
-
-
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    accessorKey: "addtime",
+    header: "Date",
+    cell: ({row}) => <div className="capitalize">{ dayjs(row.getValue("addtime")).format("DD,MMM YY")}</div>,
   },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({row}) => <div className={`capitalize ${
+      row.getValue("status") == ("pending" || "failed")
+        ? "text-red-500"
+        : "text-green-500"
+    } `}>{row.getValue("status")}</div>,
+  },
+//   {
+//     id: "actions",
+//     enableHiding: false,
+//     cell: ({row}) => {
+//       const income = row.original;
+
+//       return (
+        
+//         <EditIncomeForm
+//         title={income.title}
+//         mrp={income.mrp}
+//         rsprice={income.rsprice}
+//         status={income.status}
+//         id={income._id}        
+//         // customercontact={income.contact}
+//         // setfirst={setfirst}
+//       />
+//       );
+//     },
+//   },
 ];
 
-export function ExpenceTable() {
+export function OfflineOrdersTable({tableData}: any) {
+  console.log(tableData);
+  const data = tableData;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -221,14 +229,16 @@ export function ExpenceTable() {
       <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Search Name..."
-          value={(table.getColumn("type")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("title")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("type")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         <div className="ml-auto flex gap-5">
-          {/* <AddExpencForm/> */}
+          {/* <AddIncomeForm /> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="default" className="ml-auto">
@@ -258,7 +268,7 @@ export function ExpenceTable() {
       </div>
       <div className="rounded-md border">
         <Table>
-          <ScrollArea className="h-[350px] border-0 p-4  py-5 w-full ">
+          <ScrollArea className="h-[350px] border-0 p-4 py-5 w-full z-0 ">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -307,10 +317,10 @@ export function ExpenceTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        {/* <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
+        </div> */}
         <div className="space-x-2">
           <Button
             variant="outline"

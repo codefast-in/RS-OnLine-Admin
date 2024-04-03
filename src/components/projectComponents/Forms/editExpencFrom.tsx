@@ -28,12 +28,11 @@ import {Button} from "@/components/ui/button";
 
 import app from "@/utils/axios";
 import {useToast} from "@/components/ui/use-toast";
-export default function EditIncomeForm({
+export default function EditExpenceForm({
   first,
   setfirst,
   title,
-  mrp,
-  rsprice,
+  amount,
   status,
   id,
   customername,
@@ -43,8 +42,7 @@ export default function EditIncomeForm({
 
   const [data, setData] = React.useState({
     title: title,
-    mrp: mrp,
-    rsprice: rsprice,
+    amount: amount,
     status: status,
     id: id,
     customername: customername,
@@ -117,18 +115,11 @@ export default function EditIncomeForm({
                 <Label>MRP</Label>
                 <Input
                   type="number"
-                  placeholder={mrp}
-                  onChange={(e) => setData({...data, mrp: e.target.value})}
+                  placeholder={amount}
+                  onChange={(e) => setData({...data, amount: e.target.value})}
                 />
               </div>
-              <div className="mb-5 gap-3 flex flex-col items-start">
-                <Label>RS Price</Label>
-                <Input
-                  type="number"
-                  placeholder={rsprice}
-                  onChange={(e) => setData({...data, rsprice: e.target.value})}
-                />
-              </div>
+
               <div className="mb-5 gap-3 flex flex-col items-start">
                 <Label>Customer Name</Label>
                 <Input

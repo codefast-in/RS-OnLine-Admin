@@ -110,40 +110,37 @@ import Link from "next/link";
 //     email: "carmella@hotmail.com",
 //   },
 // ];
-
+export type Services = {
+  employee: string;
+  mrp: string;
+  rsprice: string;
+  status: string;
+  title: string;
+  __v: number;
+  _id: string;
+};
 export type Employees = {
   _id: string;
   name: string;
   empID: string;
   email: string;
-  roll: "employee" | "head" | "manager" | "new";
-  status: "online" | "offline" ;
+  role: "employee" | "head" | "manager" | "new";
+  islogin: boolean;
   amount: number;
+  services: Services[];
 };
 
 export const columns: ColumnDef<Employees>[] = [
-  // {
-  //   id: "select", 
-  //   header: ({table}) => (
-  //     <Checkbox
-  //       checked={
-  //         table.getIsAllPageRowsSelected() ||
-  //         (table.getIsSomePageRowsSelected() && "indeterminate")
-  //       }
-  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //       aria-label="Select all"
-  //     />
-  //   ),
-  //   cell: ({row}) => (
-  //     <Checkbox
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //       aria-label="Select row"
-  //     />
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
+  {
+    id: "select",
+    header: "No.",
+    cell: ({row}) => {
+     
+      return <div>{row.index +1}</div>;
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "name",
     header: ({column}) => {
@@ -178,16 +175,20 @@ export const columns: ColumnDef<Employees>[] = [
 
   {
     accessorKey: "role",
-    header: "Roll",
+    header: "Role",
     cell: ({row}) => <div className="capitalize">{row.getValue("role")}</div>,
   },
   {
-    accessorKey: "status",
+    accessorKey: "islogin",
     header: "Status",
-    cell: ({row}) => <div className="capitalize">{row.getValue("status")}</div>,
+    cell: ({row}) => {
+      let stauts = row.getValue("islogin");
+      return(
+      <div className={stauts?"text-green-500 capitalize":"text-red-500 capitalize"}>{stauts?"Online":"Offline"}</div>
+    )},
   },
   {
-    accessorKey: "amount",
+    accessorKey: "services",
     header: ({column}) => {
       return (
         <Button
@@ -200,8 +201,12 @@ export const columns: ColumnDef<Employees>[] = [
       );
     },
     cell: ({row}) => {
-      const amount = parseFloat(row.getValue("amount"));
-
+      let totalIncome = 0;
+      let incomes: Services[] = row.getValue("services");
+      incomes.map((value: any, index: number) => {
+        totalIncome = totalIncome + +value.rsprice;
+      });
+      const amount = parseFloat(totalIncome.toPrecision());
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-IN", {
         style: "currency",
@@ -234,7 +239,11 @@ export const columns: ColumnDef<Employees>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
-            <DropdownMenuItem asChild><Link href={`/admin/employees/${Employees._id}`}>View Employees details</Link></DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/employees/${Employees._id}`}>
+                View Employees details
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -242,10 +251,9 @@ export const columns: ColumnDef<Employees>[] = [
   },
 ];
 
-export function EmpListTable({employees}:any) {
-
-const data = employees;
-
+export function EmpListTable({employees}: any) {
+  const data = employees;
+  // console.log(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -285,7 +293,7 @@ const data = employees;
           className="max-w-sm"
         />
         <div className="ml-auto flex gap-5">
-          <AddEmpForm/>
+          <AddEmpForm />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="default" className="ml-auto">

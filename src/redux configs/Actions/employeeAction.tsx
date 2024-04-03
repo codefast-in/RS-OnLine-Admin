@@ -6,22 +6,21 @@ import {
   removeError,
   EmployeeState,
 } from "../Reducers/employeeReducer";
-import { AppDispatch } from "../store";
+import {AppDispatch} from "../store";
 
-
-export const asyncAddEmployee:any =
+export const asyncAddEmployee: any =
   (employee: {}) => async (dispatch: any, getState: any) => {
     try {
       const {data} = await app.post("/api/employee/signup/", employee);
-      // console.log(data);
+      console.log(data);
     } catch (error: any) {
       console.log(error.response.data.message);
       dispatch(isError(error.response.data.message));
     }
   };
 
-export const asynceCurrentEmployee:any =
-  () => async (dispatch:AppDispatch, getState: any) => {
+export const asynceCurrentEmployee: any =
+  () => async (dispatch: AppDispatch, getState: any) => {
     try {
       const data = await app.post("/api/employee/current/");
       // console.log(data);
@@ -32,8 +31,8 @@ export const asynceCurrentEmployee:any =
     }
   };
 
-export const asyncLoginEmployee:any =
-  (loginData: {}) => async (dispatch:AppDispatch, getState: any) => {
+export const asyncLoginEmployee: any =
+  (loginData: {}) => async (dispatch: AppDispatch, getState: any) => {
     try {
       const {data} = await app.post("/api/employee/signin/", loginData);
 
@@ -44,7 +43,7 @@ export const asyncLoginEmployee:any =
     }
   };
 
-export const asyncLogoutEmployee:any =
+export const asyncLogoutEmployee: any =
   () => async (dispatch: AppDispatch, getState: any) => {
     try {
       const {data} = await app.get("/api/employee/signout/");

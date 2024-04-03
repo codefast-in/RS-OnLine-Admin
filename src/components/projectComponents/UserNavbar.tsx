@@ -39,6 +39,7 @@ import {
 import {useDispatch} from "react-redux";
 
 import {asyncLogoutEmployee} from "@/redux configs/Actions/employeeAction";
+// import LeaveReqForm from "./Forms/leaveRequestForm";
 
 // Data
 const pagesLinks = [
@@ -136,10 +137,10 @@ export default function UserNavbar(parms: any) {
               </SheetHeader>
 
               <SheetDescription className="mb-auto flex-col flex gap-3 mt-5 ">
-                <Button  variant="ghost" asChild>
+                <Button variant="ghost" asChild>
                   <Link href="/user/profile">Profile</Link>
                 </Button>
-
+                {/* <LeaveReqForm /> */}
                 {/* <Link href="/user/editprofile">Edit Profile</Link> */}
                 {/* <Link href="/user/setting">Setting</Link> */}
                 <Button onClick={logOut} variant="ghost">
@@ -193,16 +194,12 @@ export default function UserNavbar(parms: any) {
               <DropdownMenuItem>
                 <Link href="/user/profile">Profile</Link>
               </DropdownMenuItem>
-
               {/* <DropdownMenuItem>Edit Profile</DropdownMenuItem> */}
-
+                {/* <LeaveReqForm />  */}
+            
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem onClick={logOut}>
-                {/* <Link href="/" onClick={logOut}> */}
-                Log Out
-                {/* </Link> */}
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={logOut}>Log Out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -23,6 +23,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useRouter} from "next/navigation";
 import {AdminState} from "@/redux configs/Reducers/adminReducer";
 import {asyncLoginAdmin} from "@/redux configs/Actions/adminActions";
+import ResetPassForm from "./ResetPassForm";
 
 function AdminLoginForm() {
   const [visible, setVisible] = useState(false);
@@ -52,7 +53,8 @@ function AdminLoginForm() {
       console.log(error);
 
       toast.toast({
-        title: "Invalid Email/Password",
+        variant:'destructive',
+        title:error.message,
       });
     }
   };
@@ -113,10 +115,11 @@ function AdminLoginForm() {
           </div>
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="felx flex-col gap-5">
         <Button className="w-full" onClick={sendData}>
           Login
         </Button>
+        <ResetPassForm user="admin" />
       </CardFooter>
     </Card>
   );

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {Inter} from "next/font/google";
 
@@ -7,7 +7,7 @@ import {ThemeProvider} from "@/components/theme-provider";
 import Navbar from "@/components/projectComponents/Navbar";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {AdminState} from "@/redux configs/Reducers/adminReducer";
 import {asynceCurrentAdmin} from "@/redux configs/Actions/adminActions";
 
@@ -20,18 +20,20 @@ export default function RootLayout({
 }>) {
   const dispatch = useDispatch();
   const router = useRouter();
-
+  const path = usePathname();
+  
   const admin = useSelector((state: AdminState) => {
     return state.admin;
   });
-// console.log(admin)
+  // console.log(admin)
   useEffect(() => {
     dispatch(asynceCurrentAdmin());
 
     if (!admin.isLogin) {
       router.push("/");
     } else {
-      router.push("/admin");
+      router.push(`${path.toString()}`);
+     
     }
   }, [admin.isLogin]);
   return (

@@ -68,23 +68,11 @@ export type Products = {
 export const columns: ColumnDef<Products, any>[] = [
   {
     id: "select",
-    header: ({table}) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({row}) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    header: "No.",
+    cell: ({row}) => {
+     
+      return <div>{row.index +1}</div>;
+    },
     enableSorting: false,
     enableHiding: false,
   },

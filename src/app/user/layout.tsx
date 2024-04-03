@@ -27,7 +27,7 @@ export default function RootLayout({
   const employee = useSelector((state: EmployeeState) => {
     return state.employee;
   });
-
+// console.log(employee)
   useEffect(() => {
     dispatch(asynceCurrentEmployee());
 

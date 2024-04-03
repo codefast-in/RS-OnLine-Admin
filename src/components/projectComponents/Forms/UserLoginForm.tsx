@@ -9,27 +9,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {EyeClosedIcon, EyeOpenIcon} from "@radix-ui/react-icons";
-import Link from "next/link";
-import SwichMode from "@/components/swichMode";
 import {Button} from "@/components/ui/button";
 import {useDispatch, useSelector} from "react-redux";
 import {
   asyncLoginEmployee,
   asynceCurrentEmployee,
 } from "@/redux configs/Actions/employeeAction";
-import {addWeeks} from "date-fns";
-import {removeEmployee} from "@/redux configs/Reducers/employeeReducer";
+
 import {useRouter} from "next/navigation";
 import {EmployeeState} from "@/redux configs/Reducers/employeeReducer";
 import {useToast} from "@/components/ui/use-toast";
+import ResetPassForm from "./ResetPassForm";
+
+import axios from "axios";
+import {latlonToURL} from "@/utils/geoLocationUrl";
+import { useFormState } from "react-dom";
+
 function UserLoginForm() {
   const toast = useToast();
   const dispatch = useDispatch();
   const router = useRouter();
-
+const[locationAcc,setLocationAcc] = useState(true)
   const [visible, setVisible] = useState(false);
   const changType = () => {
     setVisible(!visible);
@@ -37,6 +41,7 @@ function UserLoginForm() {
   const [data, setData] = React.useState({
     email: "",
     password: "",
+    locationurl:''
   });
 
   const {isLogin, errors} = useSelector((state: EmployeeState) => {
@@ -49,7 +54,6 @@ function UserLoginForm() {
 
     try {
       dispatch(asyncLoginEmployee(info));
-     
     } catch (error: any) {
       console.log(error);
 
@@ -61,6 +65,20 @@ function UserLoginForm() {
 
   // console.log(state.employee.isLogin);
   useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (postion) => {
+          setLocationAcc(false)
+          const {latitude, longitude} = postion.coords;
+
+          let mapurl = latlonToURL(latitude, longitude);
+          console.log(mapurl);
+          setData({...data,locationurl:mapurl})
+        },
+        (error: any) => console.log(error.message)
+      );
+    }
+
     !isLogin ? router.push("/") : router.push("/user");
 
     errors.length != 1
@@ -117,10 +135,11 @@ function UserLoginForm() {
           </div>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button className="w-full" onClick={sendData}>
+      <CardFooter className="felx flex-col gap-5">
+        <Button className="w-full" onClick={sendData} disabled={locationAcc}>
           Login
         </Button>
+        <ResetPassForm user="employee" />
       </CardFooter>
     </Card>
   );

@@ -89,6 +89,16 @@ export type TopSeller = {
 
 export const columns: ColumnDef<TopSeller>[] = [
   {
+    id: "select",
+    header: "No.",
+    cell: ({row}) => {
+     
+      return <div>{row.index +1}</div>;
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: "Product",
     header: "Product",
     cell: ({ row }) => (

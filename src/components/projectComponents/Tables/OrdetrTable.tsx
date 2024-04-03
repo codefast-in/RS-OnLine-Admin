@@ -116,28 +116,16 @@ export type Orders = {
 };
 
 export const columns: ColumnDef<Orders, any>[] = [
-  //   {
-  //     id: "select",
-  //     header: ({table}) => (
-  //       <Checkbox
-  //         checked={
-  //           table.getIsAllPageRowsSelected() ||
-  //           (table.getIsSomePageRowsSelected() && "indeterminate")
-  //         }
-  //         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //         aria-label="Select all"
-  //       />
-  //     ),
-  //     cell: ({row}) => (
-  //       <Checkbox
-  //         checked={row.getIsSelected()}
-  //         onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //         aria-label="Select row"
-  //       />
-  //     ),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
+  {
+    id: "select",
+    header: "No.",
+    cell: ({row}) => {
+     
+      return <div>{row.index +1}</div>;
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
 
   {
     accessorKey: "orderId",
@@ -360,7 +348,7 @@ export function OrdersTable() {
         </div>
         <div className="rounded-md border">
           <Table>
-            <ScrollArea className="h-[350px] border-0 p-4 mr-10 py-5 w-full ">
+            <ScrollArea className="h-[350px] border-0 p-4  py-5 w-full ">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>

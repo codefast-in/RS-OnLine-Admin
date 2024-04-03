@@ -1,4 +1,6 @@
-import React from "react";
+'use client'
+
+import React, {useEffect, useState} from "react";
 import {
   Card,
   CardContent,
@@ -10,6 +12,8 @@ import {
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 import CustomerTable from "@/components/projectComponents/Tables/CustomerTable";
+import app from "@/utils/axios";
+import {useToast} from "@/components/ui/use-toast";
 
 const cardData = [
   {cardtitle: "Total Customers", value: 30, valueChange: 40},
@@ -19,6 +23,31 @@ const cardData = [
 ];
 
 export default function page() {
+  const Toast = useToast();
+  const [customerData, setcustomerData] = useState<any>();
+  const getData = async () => {
+    try {
+      const responce = await app.get("/api/admin/allofflinecustomers");
+      setcustomerData(responce.data);
+      Toast.toast({
+        variant: "success",
+        title: responce.data.message,
+      });
+    } catch (error: any) {
+      Toast.toast({
+        variant: "destructive",
+        title: error.message,
+      });
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+// console.log(customerData && customerData.allcutomers)
+
   return (
     <div className="mr-10 py-5 w-[80%] h-full  ">
       <div className="flex flex-row  justify-between items-center   gap-5  mb-5">
@@ -46,11 +75,11 @@ export default function page() {
           <TabsTrigger value="Offline">Offline Custome</TabsTrigger>
         </TabsList>
         <TabsContent value="Online">
-          <CustomerTable />
+          <CustomerTable tabaleData={customerData ? customerData.allcutomers :[]} />
         </TabsContent>
 
         <TabsContent value="Offline">
-          <CustomerTable />
+          <CustomerTable tabaleData={customerData ? customerData.allcutomers :[]} />
         </TabsContent>
       </Tabs>
     </div>

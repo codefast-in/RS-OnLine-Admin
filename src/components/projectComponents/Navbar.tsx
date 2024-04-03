@@ -43,6 +43,7 @@ const pagesLinks = [
   {label: "Customers", path: "/customers"},
   {label: "Employees", path: "/employees"},
   {label: "Accounts", path: "/accounts"},
+  // {label: "Events", path: "/events"},
   // {label: "Reports", path: "/reports"},
   // {label: "Settings", path: "/settings"},
 ];

@@ -27,6 +27,14 @@ const cardData = [
 import {Badge} from "@/components/ui/badge";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import EditIncomeForm from "@/components/projectComponents/Forms/editIncomeForm";
+import dayjs from "dayjs";
+import {useToast} from "@/components/ui/use-toast";
+import app from "@/utils/axios";
+import { IncomeTable } from "@/components/projectComponents/Tables/IncomeTable";
+import { ExpenceTable } from "@/components/projectComponents/Tables/ExpenceTable";
+import AddCustomerForm from "@/components/projectComponents/Forms/addCustomerForm";
+import { MyMapComponent } from "@/components/projectComponents/Maps";
+
 
 const indRS = (value: number) => {
   // Format the amount as a rupi amount
@@ -38,37 +46,8 @@ const indRS = (value: number) => {
   return formatted;
 };
 
-const tasks = [
-  {
-    taskId: "t123",
-    title: "Task 1",
-    description:
-      " task description Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, officia?",
-    status: "pending",
-  },
-  {
-    taskId: "t124",
-    title: "Task 2",
-    description:
-      " task description Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, officia?",
-    status: "pending",
-  },
-  {
-    taskId: "t125",
-    title: "Task 3",
-    description:
-      " task description Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, officia?",
-    status: "pending",
-  },
-  {
-    taskId: "t126",
-    title: "Task 4",
-    description:
-      " task description Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, officia?",
-    status: "pending",
-  },
-];
-
+const lat = "23.24965742318646"
+const long = "77.47080411156912"
 
 
 export default function page() {
@@ -76,13 +55,39 @@ export default function page() {
 
   const {employee} = useSelector((state: EmployeeState) => state.employee);
   const services = employee && employee.services;
+  const expenses = employee && employee.expenses;
+  const tasks = employee && employee.tasks;
+ 
+ 
 
   const dispatch = useDispatch();
+  const Toast = useToast();
   let totalIncome = 0;
   employee &&
     employee.services.map((value: any, index: number) => {
       totalIncome = totalIncome + +value.rsprice;
     });
+
+  const upDateTask = async (e: any, id: string) => {
+    e.preventDefault();
+    console.log(id);
+    try {
+      const responce = await app.post(`/api/employee/updatetasks/${id}`, {
+        status: "success",
+      });
+      console.log(responce.data.message);
+      Toast.toast({
+        variant: "success",
+        title: responce.data.message,
+      });
+    } catch (error: any) {
+      Toast.toast({
+        variant: "destructive",
+        title: error.message,
+      });
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
     // console.log(totalIncome);
     dispatch(asynceCurrentEmployee());
@@ -109,13 +114,16 @@ export default function page() {
           ))}
         </div>
         <div className="flex flex-row lg:flex-row justify-start items-start gap-5 w-full ">
+          
           <AddIncomeForm first={first} setfirst={setfirst} />
           <AddExpencForm />
-          {/* <IncomeTable />
-          <ExpenceTable /> */}
+          <AddCustomerForm/>
         </div>
         <div className="flex flex-col lg:flex-row justify-start items-start gap-3 w-full ">
-          <Card className="w-full px-2">
+          
+          <IncomeTable   tableData={services?services:[]} />
+          <ExpenceTable />
+          {/* <Card className="w-full px-2">
             <CardHeader className="px-2 py-5">
               <CardTitle className="font-bold ">Income Details</CardTitle>
             </CardHeader>
@@ -150,6 +158,9 @@ export default function page() {
                           rsprice={income.rsprice}
                           status={income.status}
                           id={income._id}
+                          customername={income.customername}
+                          customercontact={income.customercontact}
+                          setfirst={setfirst}
                         />
                       </Button>
                     </Card>
@@ -157,22 +168,88 @@ export default function page() {
                 : "No Details available"}
             </ScrollArea>
           </Card>
+          <Card className="w-full px-2">
+            <CardHeader className="px-2 py-5">
+              <CardTitle className="font-bold ">Expence Details</CardTitle>
+            </CardHeader>
+            <ScrollArea className=" h-[300px] rounded-md border mb-2">
+              {expenses
+                ? expenses.map((income: any, index: number) => (
+                    <Card
+                      key={index}
+                      className=" shadow-none rounded-none py-2 px-3  hover:bg-slate-100 flex justify-between items-center">
+                      <div>
+                        <div className="flex justify-between items-center ">
+                          <div className="items-start font-semibold">
+                            {income.title}
+                          </div>
+                          <Badge
+                            variant="outline"
+                            className={`capitalize ${
+                              income.status == "paid"
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                            }  text-white p-1 rounded-full`}
+                          />
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <div>Amount : {income.amount}</div>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="icon" className="mr-2">
+                        <EditIncomeForm
+                          title={income.title}
+                          mrp={income.mrp}
+                          rsprice={income.rsprice}
+                          status={income.status}
+                          id={income._id}
+                          customername={income.customername}
+                          customercontact={income.customercontact}
+                          setfirst={setfirst}
+                        />
+                      </Button>
+                    </Card>
+                  ))
+                : "No Details available"}
+            </ScrollArea>
+          </Card> */}
         </div>
+        <div className="flex flex-col lg:flex-row justify-start items-start gap-3 w-full "></div>
         <div className="grid grid-cols-1  sm:grid-cols-2  md:grid-cols-3   gap-5  w-full ">
-          {tasks.map((task, index) => (
-            <Card key={index}>
-              <CardHeader>{task.title}</CardHeader>
-              <CardContent>{task.description}</CardContent>
-              <CardFooter className=" gap-2 lg:gap-5">
-                <Button size="sm">Task Details</Button>
-                <Button size="sm">
-                  {task.status == "pending" ? "Mark as Done" : "Task Complited"}{" "}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+          {tasks &&
+            tasks.map((task: any, index: number) => (
+              <Card key={index}>
+                <CardHeader>
+                  <CardTitle>{task.title}</CardTitle>
+                  <CardDescription>{task.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div>
+                    <span>Start Date : </span>
+                    <span>{dayjs(task.startdate).format("DD,MMMYY")} </span>
+                  </div>
+                  <div>
+                    <span>End Date : </span>
+                    <span>{dayjs(task.enddate).format("DD,MMMYY")} </span>
+                  </div>
+                </CardContent>
+                <CardFooter className=" gap-2 lg:gap-5">
+                  {/* <Button size="sm">Task Details</Button> */}
+                  <Button
+                    size="sm"
+                    onClick={(e) => upDateTask(e, task._id)}
+                    disabled={task.status == "pending" ? false : true}>
+                    {task.status == "pending"
+                      ? "Mark as Complited"
+                      : "Task Complited"}
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
         </div>
+        <MyMapComponent/>
       </div>
+
     </div>
   );
 }

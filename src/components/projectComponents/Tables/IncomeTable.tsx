@@ -45,71 +45,87 @@ import {ScrollArea} from "@/components/ui/scroll-area";
 
 import AddEmpForm from "../Forms/addEmpForm";
 import AddIncomeForm from "../Forms/addIncomeForm";
+import EditIncomeForm from "../Forms/editIncomeForm";
 
-const data: Employees[] = [
-  {
-    id: "m5gr84i9",
-    productName: "Mouse",
-    empID: "RS-001",
-    mrp: 350,
-    rsPrice: 316,
-    status: "paid",
-    date: dayjs().format("DD MMM,YYYY")
-  },
-];
 
-export type Employees = {
-  id: string;
-  productName: string;
-  empID: string;
+
+export type Income = {
+  _id: string;
   mrp: number;
   status: "paid" | "pending";
-  rsPrice: number;
-  date: Date;
+  addtime: string;
+  employee: string;
+  offlinecustomer: string;
+  rsprice: number;
+  title: string;
 };
 
-export const columns: ColumnDef<Employees>[] = [
+export const columns: ColumnDef<Income>[] = [
   {
     id: "select",
-    header: ({table}) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({row}) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    header: "No.",
+    cell: ({row}) => {
+     
+      return <div>{row.index +1}</div>;
+    },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "productName",
+    accessorKey: "title",
     header: ({column}) => {
       return (
         <Button
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Product Name
+          Name
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({row}) => (
-      <div className="capitalize">{row.getValue("productName")}</div>
+      <div className="capitalize">{row.getValue("title")}</div>
+    ),
+  },
+  {
+    accessorKey: "employee",
+    header: ({column}) => {
+      
+      return (
+        <Button
+          variant="tableHead"
+          className="px-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+         Employee
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({row}:any) => (
+      <div className="capitalize">{row.getValue("employee").name}</div>
     ),
   },
 
+  {
+    accessorKey: "offlinecustomer",
+    header: ({column}) => {
   
+     return (
+        <Button
+          variant="tableHead"
+          className="px-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+         Customer
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({row}:any) =>{ 
+      return(
+      <div className="capitalize">{row.getValue("offlinecustomer").name}</div>
+    )},
+  },
   {
     accessorKey: "mrp",
     header: ({column}) => {
@@ -118,7 +134,7 @@ export const columns: ColumnDef<Employees>[] = [
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-         M.R.P.
+          M.R.P.
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -136,7 +152,7 @@ export const columns: ColumnDef<Employees>[] = [
     },
   },
   {
-    accessorKey: "rsPrice",
+    accessorKey: "rsprice",
     header: ({column}) => {
       return (
         <Button
@@ -149,7 +165,7 @@ export const columns: ColumnDef<Employees>[] = [
       );
     },
     cell: ({row}) => {
-      const rsPrice = parseFloat(row.getValue("rsPrice"));
+      const rsPrice = parseFloat(row.getValue("rsprice"));
 
       // Format the rsPrice as a dollar rsPrice
       const formatted = new Intl.NumberFormat("en-IN", {
@@ -161,46 +177,44 @@ export const columns: ColumnDef<Employees>[] = [
     },
   },
   {
-    accessorKey: "date",
-    header: "Status",
-    cell: ({row}) => <div className="capitalize">{row.getValue("date")}</div>,
+    accessorKey: "addtime",
+    header: "Date",
+    cell: ({row}) => <div className="capitalize">{ dayjs(row.getValue("addtime")).format("DD,MMM YY")}</div>,
   },
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({row}) => <div className="capitalize">{row.getValue("status")}</div>,
+    cell: ({row}) => <div className={`capitalize ${
+      row.getValue("status") == ("pending" || "failed")
+        ? "text-red-500"
+        : "text-green-500"
+    } `}>{row.getValue("status")}</div>,
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({row}) => {
-      const Employees = row.original;
+      const income = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Employees.empID)}>
-              Copy Employees ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
-            <DropdownMenuItem>View Employees details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        
+        <EditIncomeForm
+        title={income.title}
+        mrp={income.mrp}
+        rsprice={income.rsprice}
+        status={income.status}
+        id={income._id}        
+        // customercontact={income.contact}
+        // setfirst={setfirst}
+      />
       );
     },
   },
 ];
 
-export function IncomeTable() {
+export function IncomeTable({tableData}: any) {
+  console.log(tableData);
+  const data = tableData;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -233,14 +247,16 @@ export function IncomeTable() {
       <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Search Name..."
-          value={(table.getColumn("productName")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("title")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("productName")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         <div className="ml-auto flex gap-5">
-          <AddIncomeForm />
+          {/* <AddIncomeForm /> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="default" className="ml-auto">
@@ -319,10 +335,10 @@ export function IncomeTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        {/* <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
+        </div> */}
         <div className="space-x-2">
           <Button
             variant="outline"

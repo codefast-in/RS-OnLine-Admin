@@ -14,7 +14,6 @@ import {
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -31,15 +30,15 @@ import {Button} from "@/components/ui/button";
 
 import app from "@/utils/axios";
 import {useToast} from "@/components/ui/use-toast";
-export default function AddIncomeForm({first, setfirst}:any) {
+export default function AddIncomeForm({first, setfirst}: any) {
   const Toast = useToast();
-  const [isFormFill, setisFormFill] = useState(true);
-
   const [data, setData] = React.useState({
     title: "",
     mrp: "",
     rsprice: "",
     status: "",
+   
+    contact: "",
   });
 
   const sendData = async (e: any) => {
@@ -47,6 +46,7 @@ export default function AddIncomeForm({first, setfirst}:any) {
     const info = data;
 
     try {
+      console.log(info)
       const responce = await app.post("/api/employee/addincome/", info);
       console.log(responce.data);
       Toast.toast({
@@ -56,6 +56,10 @@ export default function AddIncomeForm({first, setfirst}:any) {
       setfirst(first + 1);
     } catch (error: any) {
       console.log(error.message);
+      Toast.toast({
+        variant: "destructive",
+        title: error.message,
+      });
     }
   };
 
@@ -91,8 +95,7 @@ export default function AddIncomeForm({first, setfirst}:any) {
                   <SelectContent>
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="paid">Paid</SelectItem>
-                    <SelectItem value="return">Return</SelectItem>
-
+                    {/* <SelectItem value="return">Return</SelectItem> */}
                   </SelectContent>
                 </Select>
               </div>
@@ -112,6 +115,18 @@ export default function AddIncomeForm({first, setfirst}:any) {
                   type="number"
                   placeholder="00.0"
                   onChange={(e) => setData({...data, rsprice: e.target.value})}
+                  required
+                />
+              </div>
+             
+              <div className="mb-5 gap-3 flex flex-col items-start">
+                <Label>Customer Mobile No.</Label>
+                <Input
+                  type="number"
+                  placeholder="Mobile No."
+                  onChange={(e) =>
+                    setData({...data, contact: e.target.value})
+                  }
                   required
                 />
               </div>

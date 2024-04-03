@@ -51,133 +51,39 @@ import AddProductForm from "../Forms/addProductFrom";
 // const data: Customers[] = products
 
 export type Customers = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  maidenName: string;
-  age: number;
-  gender: string;
+  address: string;
+  buyproducts: string[];
+  city: string;
+  contact: number;
   email: string;
-  phone: string;
-  username: string;
-  password: string;
-  birthDate: string;
-  image: string;
-  bloodGroup: string;
-  height: number;
-  weight: number;
-  eyeColor: string;
-  hair: {
-    color: string;
-    type: string;
-  };
-  domain: string;
-  ip: string;
-  address: {
-    address: string;
-    city: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-    postalCode: string;
-    state: string;
-  };
-  macAddress: string;
-  university: string;
-  bank: {
-    cardExpire: string;
-    cardNumber: string;
-    cardType: string;
-    currency: string;
-    iban: string;
-  };
-  company: {
-    address: {
-      address: string;
-      city: string;
-      coordinates: {
-        lat: number;
-        lng: number;
-      };
-      postalCode: string;
-      state: string;
-    };
-    department: string;
-    name: string;
-    title: string;
-  };
-  ein: string;
-  ssn: string;
-  userAgent: string;
-  crypto: {
-    coin: string;
-    wallet: string;
-    network: string;
-  };
+  islogin: boolean;
+  name: string;
+  _id: string;
 };
 
 export const columns: ColumnDef<Customers, any>[] = [
   {
     id: "select",
-    header: ({table}) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({row}) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    header: "No.",
+    cell: ({row}) => {
+      return <div>{row.index + 1}</div>;
+    },
     enableSorting: false,
     enableHiding: false,
   },
+
+
   {
-    accessorKey: "image",
-    header: "Profile",
-    cell: ({row}) => (
-      
-        <Image
-          src={row.getValue("image")}
-          height={100}
-          width={100}
-          alt={row.getValue("firstName")}
-          className="rounded-full h-12 w-12 border"
-        />
-       
-    
-    ),
-  },
-  
-  {
-    accessorKey: "firstName",
+    accessorKey: "name",
     header: "Name",
-    cell: ({row}) => <div className="capitalize">{row.getValue("firstName")}</div>,
-  },
-  {
-    accessorKey: "age",
-    header: "Age",
-    cell: ({row}) => <div className="capitalize">{row.getValue("age")}</div>,
-  },
-  {
-    accessorKey: "address",
-    header: "Address",
     cell: ({row}) => (
-      <div className="capitalize">{row.getValue<any>("address").address}</div>
+      <div className="capitalize">{row.getValue("name")}</div>
     ),
   },
   {
-    accessorKey: "phone",
+    accessorKey: "contact",
     header: "Phone",
-    cell: ({row}) => <div className="capitalize">{row.getValue("phone")}</div>,
+    cell: ({row}) => <div className="capitalize">{row.getValue("contact")}</div>,
   },
   {
     accessorKey: "email",
@@ -186,10 +92,25 @@ export const columns: ColumnDef<Customers, any>[] = [
       <div className="text-start font-medium">{row.getValue("email")}</div>
     ),
   },
+  {
+    accessorKey: "address",
+    header: "Address",
+    cell: ({row}) => (
+      <div className="capitalize">{row.getValue<any>("address")}</div>
+    ),
+  },
+  {
+    accessorKey: "city",
+    header: "City",
+    cell: ({row}) => (
+      <div className="capitalize text-start font-medium">{row.getValue("city")}</div>
+    ),
+  },
+  
 
   {
     id: "actions",
-   
+
     enableHiding: false,
     cell: ({row}) => {
       const Customers = row.original;
@@ -206,14 +127,14 @@ export const columns: ColumnDef<Customers, any>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() =>
-                navigator.clipboard.writeText(Customers.id.toString())
+                navigator.clipboard.writeText(Customers._id.toString())
               }>
               Copy Customers ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
             <DropdownMenuItem asChild>
-              <Link href={`/admin/customers/${Customers.id}`}>
+              <Link href={`/admin/customers/${Customers._id}`}>
                 View Customers details
               </Link>
             </DropdownMenuItem>
@@ -224,17 +145,19 @@ export const columns: ColumnDef<Customers, any>[] = [
   },
 ];
 
-export function CustomerTable() {
-  const [data, setCustomers] = React.useState([]);
+export function CustomerTable({tabaleData}: any) {
+  // const [data, setCustomers] = React.useState(tabaleData);
 
-  React.useEffect(() => {
-    (async () => {
-      const response = await axios.get("https://dummyjson.com/users");
-      setCustomers(response.data.users);
-    })();
-    console.log(data);
-  }, []);
+  const data = tabaleData;
+  // React.useEffect(() => {
+  // (async () => {
+  //   const response = await axios.get("https://dummyjson.com/users");
+  //   setCustomers(response.data.users);
+  // })();
+  // setCustomers(tabaleData);
+  // }, []);
 
+  console.log(data);
   {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
@@ -267,7 +190,9 @@ export function CustomerTable() {
         <div className="flex items-center py-4">
           <Input
             placeholder="Search Name..."
-            value={(table.getColumn("firstName")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("firstName")?.getFilterValue() as string) ?? ""
+            }
             onChange={(event: any) =>
               table.getColumn("firstName")?.setFilterValue(event.target.value)
             }

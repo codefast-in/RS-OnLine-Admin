@@ -25,31 +25,38 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@radix-ui/react-label";
 
 import {Button} from "@/components/ui/button";
+import {useToast} from "@/components/ui/use-toast";
 
 import app from "@/utils/axios";
 export default function AddExpencForm({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [data, setData] = React.useState({
-    type: "",
-    discreption: "",
+    title: "",
+    description: "",
     amount: "",
     status: "",
-    date: new Date(),
   });
-
+  const Toast = useToast();
   const sendData = async (e: any) => {
     e.preventDefault();
     const info = data;
     try {
-      const responce = await app.post("/api/employee/signup/", info);
+      const responce = await app.post("/api/employee/addexpense/", info);
       console.log(responce);
+      Toast.toast({
+        variant: "success",
+        title: "Expence Added Successfully",
+      });
     } catch (error: any) {
+      Toast.toast({
+        variant: "destructive",
+        title: error.message,
+      });
       console.log(error.message);
     }
   };
 
-  
   return (
     <Dialog>
       <DialogTrigger>
@@ -63,10 +70,10 @@ export default function AddExpencForm({
           <DialogDescription>
             <form onSubmit={sendData} className="mt-5">
               <div className="mb-5 gap-3 flex flex-col items-start">
-                <Label>Type</Label>
+                <Label>Title</Label>
                 <Input
                   placeholder="Expencese Type"
-                  onChange={(e) => setData({...data, type: e.target.value})}
+                  onChange={(e) => setData({...data, title: e.target.value})}
                   required
                 />
               </div>
@@ -76,7 +83,7 @@ export default function AddExpencForm({
                 <Input
                   placeholder="Expencese Discreption"
                   onChange={(e) =>
-                    setData({...data, discreption: e.target.value})
+                    setData({...data, description: e.target.value})
                   }
                   required
                 />
@@ -140,8 +147,8 @@ export default function AddExpencForm({
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="employee">Pending</SelectItem>
-                    <SelectItem value="head">Paid</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="paid">Paid</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

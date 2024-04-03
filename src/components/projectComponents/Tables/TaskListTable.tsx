@@ -44,49 +44,49 @@ import {
 import {ScrollArea} from "@/components/ui/scroll-area";
 
 import AddTaskForm from "../Forms/addTaskForm";
+import app from "@/utils/axios";
+let count = 0;
 
-const data: Tasks[] = [
-  {
-    id: "m5gr84i9",
-    title: "Task 1",
-    empID: "RS-001",
-    empName: "Sachin Pawar",
-    status: "success",
-    strDate: dayjs("2000/07/16").format("DD MMM,YYYY"),
-    endDate: dayjs().format("DD MMM,YYYY"),
-  },
-];
+// const data: Tasks[] = [
+//   {
+//     description: "task des",
+//     employee: {
+//       avatar: {
+//         url: "https://toppng.com/uploads/preview/donna-picarro-dummy-avatar-115633298255iautrofxa.png",
+//       },
+//       name: "sachin",
+//       _id: "65e816e31c2ce675279dfc5f",
+//     },
+//     enddate: "2024-03-23",
+//     startdate: "2024-03-22",
+//     status: "success",
+//     title: "task 1",
+//     _id: "65fbd3f6b8e97748f855562d",
+//   },
+// ];
 
 export type Tasks = {
-  id: string;
+  _id: string;
   title: string;
-  empID: string;
-  empName: string;
-  status: "pending" | "processing" | "success" | "failed";
-  strDate: Date;
-  endDate: Date;
+  status: "pending" | "success";
+  description: string;
+  employee: {
+    avatar: {url: string};
+    name: string;
+    _id: string;
+  };
+  enddate: string;
+  startdate: string;
 };
 
 export const columns: ColumnDef<Tasks>[] = [
   {
     id: "select",
-    header: ({table}) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({row}) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    header: "No.",
+    cell: ({row}) => {
+     
+      return <div>{row.index+1}</div>;
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -98,7 +98,7 @@ export const columns: ColumnDef<Tasks>[] = [
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Name
+          Title
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -107,33 +107,34 @@ export const columns: ColumnDef<Tasks>[] = [
   },
 
   {
-    accessorKey: "empName",
+    accessorKey: "employee",
     header: ({column}) => {
       return (
         <Button
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Team
+          Employee
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({row}) => (
-      <div className="capitalize">{row.getValue("empName")}</div>
-    ),
+    cell: ({row}: any) => {
+      // console.log(row.getValue("employee").name);
+      return <div className="capitalize">{row.getValue("employee").name}</div>;
+    },
   },
 
   {
-    accessorKey: "strDate",
+    accessorKey: "startdate",
     header: "Start Date",
     cell: ({row}) => (
-      <div className="capitalize">{row.getValue("strDate")}</div>
+      <div className="capitalize">{row.getValue("startdate")}</div>
     ),
   },
 
   {
-    accessorKey: "endDate",
+    accessorKey: "enddate",
     header: ({column}) => {
       return (
         <Button
@@ -146,7 +147,7 @@ export const columns: ColumnDef<Tasks>[] = [
       );
     },
     cell: ({row}) => (
-      <div className="capitalize">{row.getValue("endDate")}</div>
+      <div className="capitalize">{row.getValue("enddate")}</div>
     ),
   },
   {
@@ -180,7 +181,7 @@ export const columns: ColumnDef<Tasks>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Tasks.empID)}>
+              onClick={() => navigator.clipboard.writeText(Tasks._id)}>
               Copy Tasks ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -193,14 +194,20 @@ export const columns: ColumnDef<Tasks>[] = [
   },
 ];
 
-export function TaskListTable() {
+export function TaskListTable({taskData, employeesData}: any) {
+  let {tasks} = taskData;
+  let data = tasks;
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  console.log(data);
 
   const table = useReactTable({
     data,
@@ -233,7 +240,7 @@ export function TaskListTable() {
           className="max-w-sm"
         />
         <div className="ml-auto flex gap-5">
-          <AddTaskForm />
+          <AddTaskForm employessData={employeesData} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="default" className="ml-auto">
@@ -283,7 +290,7 @@ export function TaskListTable() {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {tasks && table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
@@ -313,22 +320,22 @@ export function TaskListTable() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {tasks && table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {tasks && table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}>
+            disabled={tasks && !table.getCanPreviousPage()}>
             Previous
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}>
+            disabled={tasks && !table.getCanNextPage()}>
             Next
           </Button>
         </div>

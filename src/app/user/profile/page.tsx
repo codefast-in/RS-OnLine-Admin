@@ -84,7 +84,7 @@ function Page({props}: any) {
     borderRadius: "50px",
   };
   return (
-    <Card className="mt-3">
+    <Card className="my-3 mx-28 w-full">
       <CardHeader>
         <CardTitle>Employee Details</CardTitle>
         <CardDescription>
@@ -103,13 +103,13 @@ function Page({props}: any) {
           />
           <div>
             <div className="flex justify-start items-center  gap-2">
-              <span className="font-semibold text-lg  min-w-[30%]">Name :</span>
+              <span className="font-semibold text-sm  min-w-[30%]">Name :</span>
               <span className="capitalize">
                 {employee ? employee.name : ""}
               </span>
             </div>
             <div className="flex justify-start items-center gap-2">
-              <span className="font-semibold text-lg  min-w-[30%]">
+              <span className="font-semibold text-sm  min-w-[30%]">
                 Email :
               </span>
               <Link href="mailto:sachinspindofficial@gmail.com">
@@ -117,7 +117,7 @@ function Page({props}: any) {
               </Link>
             </div>
             <div className="flex justify-start items-center gap-2">
-              <span className="font-semibold text-lg  min-w-[30%]">
+              <span className="font-semibold text-sm  min-w-[30%]">
                 Mobile :
               </span>
               <Link href="tel:9516905325">
@@ -126,14 +126,14 @@ function Page({props}: any) {
             </div>
 
             <div className="flex justify-start items-center gap-2">
-              <span className="font-semibold text-lg  min-w-[30%]">Role :</span>
+              <span className="font-semibold text-sm  min-w-[30%]">Role :</span>
               <span className="capitalize">
                 {employee ? employee.role : ""}
               </span>
             </div>
 
             <div className="flex justify-start items-center gap-2">
-              <span className="font-semibold text-lg  min-w-[30%]">
+              <span className="font-semibold text-sm  min-w-[30%]">
                 Login @ :
               </span>
               <span>
@@ -152,12 +152,12 @@ function Page({props}: any) {
         </CardContent>
       </div>
       <Separator />
-      <CardHeader>
+      <CardHeader className="pb-2">
         <CardTitle>Work Details</CardTitle>
         <CardDescription>All tasks and work details</CardDescription>
       </CardHeader>
-      <div className="mt-5 p-0">
-        <CardContent className="flex items-center gap-5 justify-between flex-col">
+      <div className="mt-2 p-0">
+        <CardContent className="flex items-center gap-5 justify-between flex-col  pb-0">
           {cardData.map((card, index) => (
             <Card key={index} className="w-full">
               <CardHeader>
@@ -174,7 +174,7 @@ function Page({props}: any) {
             </Card>
           ))}
         </CardContent>
-        <CardHeader>
+        <CardHeader className="pb-2">
           <CardTitle className="my-3">Attendance</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col justify-start items-start">

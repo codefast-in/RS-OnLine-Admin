@@ -213,7 +213,7 @@ export const columns: ColumnDef<Income>[] = [
 ];
 
 export function IncomeTable({tableData}: any) {
-  console.log(tableData);
+  // console.log(tableData);
   const data = tableData;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

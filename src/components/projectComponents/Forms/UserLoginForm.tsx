@@ -27,13 +27,13 @@ import ResetPassForm from "./ResetPassForm";
 
 import axios from "axios";
 import {latlonToURL} from "@/utils/geoLocationUrl";
-import { useFormState } from "react-dom";
+import {useFormState} from "react-dom";
 
 function UserLoginForm() {
   const toast = useToast();
   const dispatch = useDispatch();
   const router = useRouter();
-const[locationAcc,setLocationAcc] = useState(true)
+  const [locationAcc, setLocationAcc] = useState(true);
   const [visible, setVisible] = useState(false);
   const changType = () => {
     setVisible(!visible);
@@ -41,7 +41,7 @@ const[locationAcc,setLocationAcc] = useState(true)
   const [data, setData] = React.useState({
     email: "",
     password: "",
-    locationurl:''
+    locationurl: "",
   });
 
   const {isLogin, errors} = useSelector((state: EmployeeState) => {
@@ -51,7 +51,7 @@ const[locationAcc,setLocationAcc] = useState(true)
   const sendData = async (e: any) => {
     e.preventDefault();
     const info = data;
-
+    console.log(info);
     try {
       dispatch(asyncLoginEmployee(info));
     } catch (error: any) {
@@ -68,12 +68,12 @@ const[locationAcc,setLocationAcc] = useState(true)
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (postion) => {
-          setLocationAcc(false)
+          setLocationAcc(false);
           const {latitude, longitude} = postion.coords;
 
           let mapurl = latlonToURL(latitude, longitude);
           console.log(mapurl);
-          setData({...data,locationurl:mapurl})
+          setData({...data, locationurl: mapurl});
         },
         (error: any) => console.log(error.message)
       );

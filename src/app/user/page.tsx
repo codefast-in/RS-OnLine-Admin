@@ -113,7 +113,7 @@ export default function page() {
             </Card>
           ))}
         </div>
-        <div className="flex flex-row lg:flex-row justify-start items-start gap-5 w-full ">
+        <div className="flex  flex-wrap lg:flex-row justify-start items-start gap-5 w-full ">
           
           <AddIncomeForm first={first} setfirst={setfirst} />
           <AddExpencForm />
@@ -247,7 +247,7 @@ export default function page() {
               </Card>
             ))}
         </div>
-        <MyMapComponent/>
+        
       </div>
 
     </div>

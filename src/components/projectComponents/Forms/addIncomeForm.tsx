@@ -44,7 +44,7 @@ export type Product = {
   title: string;
   mrp: string;
   rsprice: string;
-  qut: string;
+  quantity: string;
 };
 
 export default function AddIncomeForm({first, setfirst}: any) {
@@ -61,13 +61,13 @@ export default function AddIncomeForm({first, setfirst}: any) {
     title: "",
     mrp: "",
     rsprice: "",
-    qut: "",
+    quantity: "",
   });
   const addProduct = () => {
     // console.log(product);
     if (
       product.mrp.length == 0 ||
-      product.qut.length == 0 ||
+      product.quantity.length == 0 ||
       product.rsprice.length == 0 ||
       product.title.length == 0
     ) {
@@ -80,13 +80,15 @@ export default function AddIncomeForm({first, setfirst}: any) {
     }
     setProductArr([...productArr, product]);
     productArr.map((item) =>
-      settotalAmount(totalAmount + parseInt(item.rsprice) * parseInt(item.qut))
+      settotalAmount(
+        totalAmount + parseInt(item.rsprice) * parseInt(item.quantity)
+      )
     );
     setProduct({
       title: "",
       mrp: "",
       rsprice: "",
-      qut: "",
+      quantity: "",
     });
   };
   // console.log(totalAmount);
@@ -94,9 +96,15 @@ export default function AddIncomeForm({first, setfirst}: any) {
   // console.log(productArr);
   const sendData = async (e: any) => {
     e.preventDefault();
-
-    const info = {data,productArr};
-
+    data.products = productArr;
+    const info = data;
+    if (data.contact.length == 0 || data.status.length == 0) {
+      Toast.toast({
+        title: "Enter Full Details",
+        variant: "destructive",
+      });
+      return 0;
+    }
     try {
       console.log(info);
       const responce = await app.post("/api/employee/addincome/", info);
@@ -107,28 +115,33 @@ export default function AddIncomeForm({first, setfirst}: any) {
       });
       setfirst(first + 1);
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error);
       Toast.toast({
         variant: "destructive",
-        title: error.message,
+        title: error.response.data.message,
       });
     }
+      setProductArr([]);
+      setData({
+        products: productArr,
+        status: "",
+        contact: "",
+      });
+      console.log(data, productArr);
   };
 
   useEffect(() => {}, [productArr]);
 
- 
-
   return (
-    <Popover >
+    <Popover>
       <PopoverTrigger asChild>
         <Button variant="default">
           Add Income <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-screen md:w-[80vw] md:ml-20">
-        <Table >
-          <TableCaption>A list of your recent invoices.</TableCaption>
+        <Table>
+          <TableCaption>Add new invoices.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>NO.</TableHead>
@@ -141,19 +154,20 @@ export default function AddIncomeForm({first, setfirst}: any) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {productArr.map((invoice: any, index) => (
-              <TableRow key={index}>
-                <TableCell className="font-medium">{index + 1}</TableCell>
-                <TableCell>{invoice.title}</TableCell>
-                <TableCell>{invoice.qut}</TableCell>
-                <TableCell>{invoice.mrp}</TableCell>
-                <TableCell>{invoice.rsprice}</TableCell>
+            {productArr &&
+              productArr.map((invoice: any, index) => (
+                <TableRow key={index}>
+                  <TableCell className="font-medium">{index + 1}</TableCell>
+                  <TableCell>{invoice.title}</TableCell>
+                  <TableCell>{invoice.quantity}</TableCell>
+                  <TableCell>{invoice.mrp}</TableCell>
+                  <TableCell>{invoice.rsprice}</TableCell>
 
-                <TableCell>
-                  {parseInt(invoice.qut) * parseInt(invoice.rsprice)}
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell>
+                    {parseInt(invoice.quantity) * parseInt(invoice.rsprice)}
+                  </TableCell>
+                </TableRow>
+              ))}
 
             <TableRow>
               <TableCell className="font-medium">New Item</TableCell>
@@ -172,9 +186,9 @@ export default function AddIncomeForm({first, setfirst}: any) {
                 <Input
                   type="number"
                   placeholder="00.0"
-                  value={product.qut}
+                  value={product.quantity}
                   onChange={(e) =>
-                    setProduct({...product, qut: e.target.value})
+                    setProduct({...product, quantity: e.target.value})
                   }
                   required
                 />
@@ -237,7 +251,11 @@ export default function AddIncomeForm({first, setfirst}: any) {
               </TableCell>
 
               <TableCell>
-                <Button variant="default" type="submit" onClick={(e)=>sendData(e)} className="w-full">
+                <Button
+                  variant="default"
+                  type="submit"
+                  onClick={(e) => sendData(e)}
+                  className="w-full">
                   Add
                 </Button>
               </TableCell>

@@ -46,6 +46,7 @@ import {ScrollArea} from "@/components/ui/scroll-area";
 import AddEmpForm from "../Forms/addEmpForm";
 import AddIncomeForm from "../Forms/addIncomeForm";
 import EditIncomeForm from "../Forms/editIncomeForm";
+import Link from "next/link";
 
 
 
@@ -72,20 +73,20 @@ export const columns: ColumnDef<Income>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "products",
     header: ({column}) => {
       return (
         <Button
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Name
+          Items
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({row}) => (
-      <div className="capitalize">{row.getValue("title")}</div>
+    cell: ({row}:any) => (
+      <div className="capitalize">{row.getValue("products").length}</div>
     ),
   },
   {
@@ -126,33 +127,9 @@ export const columns: ColumnDef<Income>[] = [
       <div className="capitalize">{row.getValue("offlinecustomer").name}</div>
     )},
   },
+ 
   {
-    accessorKey: "mrp",
-    header: ({column}) => {
-      return (
-        <Button
-          variant="tableHead"
-          className="px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          M.R.P.
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({row}) => {
-      const rsPrice = parseFloat(row.getValue("mrp"));
-
-      // Format the rsPrice as a dollar rsPrice
-      const formatted = new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-      }).format(rsPrice);
-
-      return <div className="text-start font-medium">{formatted}</div>;
-    },
-  },
-  {
-    accessorKey: "rsprice",
+    accessorKey: "totalAmount",
     header: ({column}) => {
       return (
         <Button
@@ -165,7 +142,7 @@ export const columns: ColumnDef<Income>[] = [
       );
     },
     cell: ({row}) => {
-      const rsPrice = parseFloat(row.getValue("rsprice"));
+      const rsPrice = parseFloat(row.getValue("totalAmount"));
 
       // Format the rsPrice as a dollar rsPrice
       const formatted = new Intl.NumberFormat("en-IN", {
@@ -195,18 +172,42 @@ export const columns: ColumnDef<Income>[] = [
     enableHiding: false,
     cell: ({row}) => {
       const income = row.original;
-
+      console.log(income);
       return (
         
-        <EditIncomeForm
-        title={income.title}
-        mrp={income.mrp}
-        rsprice={income.rsprice}
-        status={income.status}
-        id={income._id}        
-        // customercontact={income.contact}
-        // setfirst={setfirst}
-      />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <DotsHorizontalIcon className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() =>
+                navigator.clipboard.writeText(income._id.toString())
+              }>
+              Copy Invoice NO.
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/customers/${income._id}`}>
+                View Invoices
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      //   <EditIncomeForm
+      //   title={income.title}
+      //   mrp={income.mrp}
+      //   rsprice={income.rsprice}
+      //   status={income.status}
+      //   id={income._id}        
+      //   customercontact={income.contact}
+      //   setfirst={setfirst}
+      // />
       );
     },
   },

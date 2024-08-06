@@ -65,13 +65,12 @@ const data: Employees[] = [
 ];
 
 export type Employees = {
-
+  id: string;
+  type: string;
+  empName: string;
   date: Date;
   amount: number;
-  employee: string;
   status: string;
-  title: string;
-  _id: string;
 };
 
 export const columns: ColumnDef<Employees>[] = [

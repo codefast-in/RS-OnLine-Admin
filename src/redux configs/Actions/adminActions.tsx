@@ -30,7 +30,7 @@ export const asyncLoginAdmin: any =
   (loginData: {}) => async (dispatch: any, getState: any) => {
     try {
       const {data} = await app.post("/api/admin/signin/", loginData);
-
+console.log(data)
       dispatch(asynceCurrentAdmin());
     } catch (error: any) {
       dispatch(isError(error.response.data.message));

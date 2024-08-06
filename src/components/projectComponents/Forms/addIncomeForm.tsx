@@ -121,25 +121,25 @@ export default function AddIncomeForm({first, setfirst}: any) {
         title: error.response.data.message,
       });
     }
-      setProductArr([]);
-      setData({
-        products: productArr,
-        status: "",
-        contact: "",
-      });
-      console.log(data, productArr);
+    setProductArr([]);
+    setData({
+      products: productArr,
+      status: "",
+      contact: "",
+    });
+    console.log(data, productArr);
   };
 
   useEffect(() => {}, [productArr]);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <Dialog>
+      <DialogTrigger>
         <Button variant="default">
           Add Income <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-screen md:w-[80vw] md:ml-20">
+      </DialogTrigger>
+      <DialogContent className="max-w-screen md:w-[80vw] ">
         <Table>
           <TableCaption>Add new invoices.</TableCaption>
           <TableHeader>
@@ -225,10 +225,11 @@ export default function AddIncomeForm({first, setfirst}: any) {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={1}>Total</TableCell>
+              <TableCell colSpan={4}>Total</TableCell>
               <TableCell className="text-right">{totalAmount}</TableCell>
-              <TableCell className="text-right">Customer Mobile No.</TableCell>
-              <TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={6}>
                 <Input
                   type="number"
                   placeholder="Mobile No."
@@ -236,7 +237,9 @@ export default function AddIncomeForm({first, setfirst}: any) {
                   required
                 />
               </TableCell>
-              <TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={6}>
                 <Select
                   onValueChange={(e) => setData({...data, status: e})}
                   required>
@@ -249,8 +252,9 @@ export default function AddIncomeForm({first, setfirst}: any) {
                   </SelectContent>
                 </Select>
               </TableCell>
-
-              <TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={6}>
                 <Button
                   variant="default"
                   type="submit"
@@ -262,8 +266,8 @@ export default function AddIncomeForm({first, setfirst}: any) {
             </TableRow>
           </TableFooter>
         </Table>
-      </PopoverContent>
-    </Popover>
+      </DialogContent>
+    </Dialog>
   );
 }
 

@@ -47,8 +47,7 @@ import AddEmpForm from "../Forms/addEmpForm";
 import AddIncomeForm from "../Forms/addIncomeForm";
 import EditIncomeForm from "../Forms/editIncomeForm";
 import Link from "next/link";
-
-
+import Invoice from "../Invoices";
 
 export type Income = {
   _id: string;
@@ -61,161 +60,11 @@ export type Income = {
   title: string;
 };
 
-export const columns: ColumnDef<Income>[] = [
-  {
-    id: "select",
-    header: "No.",
-    cell: ({row}) => {
-     
-      return <div>{row.index +1}</div>;
-    },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "products",
-    header: ({column}) => {
-      return (
-        <Button
-          variant="tableHead"
-          className="px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Items
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({row}:any) => (
-      <div className="capitalize">{row.getValue("products").length}</div>
-    ),
-  },
-  {
-    accessorKey: "employee",
-    header: ({column}) => {
-      
-      return (
-        <Button
-          variant="tableHead"
-          className="px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-         Employee
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({row}:any) => (
-      <div className="capitalize">{row.getValue("employee").name}</div>
-    ),
-  },
-
-  {
-    accessorKey: "offlinecustomer",
-    header: ({column}) => {
-  
-     return (
-        <Button
-          variant="tableHead"
-          className="px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-         Customer
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({row}:any) =>{ 
-      return(
-      <div className="capitalize">{row.getValue("offlinecustomer").name}</div>
-    )},
-  },
- 
-  {
-    accessorKey: "totalAmount",
-    header: ({column}) => {
-      return (
-        <Button
-          variant="tableHead"
-          className="px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Amount
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({row}) => {
-      const rsPrice = parseFloat(row.getValue("totalAmount"));
-
-      // Format the rsPrice as a dollar rsPrice
-      const formatted = new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-      }).format(rsPrice);
-
-      return <div className="text-start font-medium">{formatted}</div>;
-    },
-  },
-  {
-    accessorKey: "addtime",
-    header: "Date",
-    cell: ({row}) => <div className="capitalize">{ dayjs(row.getValue("addtime")).format("DD,MMM YY")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({row}) => <div className={`capitalize ${
-      row.getValue("status") == ("pending" || "failed")
-        ? "text-red-500"
-        : "text-green-500"
-    } `}>{row.getValue("status")}</div>,
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({row}) => {
-      const income = row.original;
-      console.log(income);
-      return (
-        
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(income._id.toString())
-              }>
-              Copy Invoice NO.
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
-            <DropdownMenuItem asChild>
-              <Link href={`/admin/customers/${income._id}`}>
-                View Invoices
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      //   <EditIncomeForm
-      //   title={income.title}
-      //   mrp={income.mrp}
-      //   rsprice={income.rsprice}
-      //   status={income.status}
-      //   id={income._id}        
-      //   customercontact={income.contact}
-      //   setfirst={setfirst}
-      // />
-      );
-    },
-  },
-];
-
-export function IncomeTable({tableData}: any) {
+export function IncomeTable({tableData,setfirst,first}: any) {
   // console.log(tableData);
   const data = tableData;
+  // const [first, setfirst] = React.useState(1);
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -223,6 +72,167 @@ export function IncomeTable({tableData}: any) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  const columns: ColumnDef<Income>[] = [
+    {
+      id: "select",
+      header: "No.",
+      cell: ({row}) => {
+        return <div>{row.index + 1}</div>;
+      },
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "products",
+      header: ({column}) => {
+        return (
+          <Button
+            variant="tableHead"
+            className="px-0"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === "asc")
+            }>
+            Items
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({row}: any) => (
+        <div className="capitalize">{row.getValue("products").length}</div>
+      ),
+    },
+    {
+      accessorKey: "employee",
+      header: ({column}) => {
+        return (
+          <Button
+            variant="tableHead"
+            className="px-0"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === "asc")
+            }>
+            Employee
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({row}: any) => (
+        <div className="capitalize">{row.getValue("employee").name}</div>
+      ),
+    },
+
+    {
+      accessorKey: "offlinecustomer",
+      header: ({column}) => {
+        return (
+          <Button
+            variant="tableHead"
+            className="px-0"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === "asc")
+            }>
+            Customer
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({row}: any) => {
+        return (
+          <div className="capitalize">
+            {row.getValue("offlinecustomer").name}
+          </div>
+        );
+      },
+    },
+
+    {
+      accessorKey: "totalAmount",
+      header: ({column}) => {
+        return (
+          <Button
+            variant="tableHead"
+            className="px-0"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === "asc")
+            }>
+            Amount
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({row}) => {
+        const rsPrice = parseFloat(row.getValue("totalAmount"));
+
+        // Format the rsPrice as a dollar rsPrice
+        const formatted = new Intl.NumberFormat("en-IN", {
+          style: "currency",
+          currency: "INR",
+        }).format(rsPrice);
+
+        return <div className="text-start font-medium">{formatted}</div>;
+      },
+    },
+    {
+      accessorKey: "addtime",
+      header: "Date",
+      cell: ({row}) => (
+        <div className="capitalize">
+          {dayjs(row.getValue("addtime")).format("DD,MMM YY")}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({row}) => (
+        <div
+          className={`capitalize ${
+            row.getValue("status") == ("pending" || "failed")
+              ? "text-red-500"
+              : "text-green-500"
+          } `}>
+          {row.getValue("status")}
+        </div>
+      ),
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({row}) => {
+        const income = row.original;
+        // console.log(income);
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(income._id.toString())
+                }>
+                Copy Invoice NO.
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            
+              <DropdownMenuItem asChild className="flex justify-center items-center " >
+                <Invoice data={income} />
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="flex justify-center items-center ">
+                <EditIncomeForm invoice={income} setfirst={setfirst} first={first} />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
+        );
+      },
+    },
+  ];
 
   const table = useReactTable({
     data,
@@ -248,11 +258,9 @@ export function IncomeTable({tableData}: any) {
       <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Search Name..."
-          value={
-            (table.getColumn("title")?.getFilterValue() as string) ?? ""
-          }
+          value={(table.getColumn("offlinecustomer")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("offlinecustomer")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

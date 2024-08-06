@@ -58,13 +58,13 @@ export default function AddExpencForm({
   };
 
   return (
-    <Dialog>
+    <Dialog >
       <DialogTrigger>
         <Button variant="default" className="ml-auto">
           Add Expencese <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[800px] ">
         <DialogHeader>
           <DialogTitle>Expencese Details</DialogTitle>
           <DialogDescription>

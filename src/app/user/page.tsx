@@ -19,36 +19,15 @@ import {EmployeeState} from "@/redux configs/Reducers/employeeReducer";
 import {useSelector, useDispatch} from "react-redux";
 import {asynceCurrentEmployee} from "@/redux configs/Actions/employeeAction";
 
-const cardData = [
-  {cardtitle: "Income By You", time: "This Month", value: 52},
-  {cardtitle: "Expencsses By You", time: "This Month", value: 30},
-];
 
-import {Badge} from "@/components/ui/badge";
-import {ScrollArea} from "@/components/ui/scroll-area";
-import EditIncomeForm from "@/components/projectComponents/Forms/editIncomeForm";
 import dayjs from "dayjs";
 import {useToast} from "@/components/ui/use-toast";
 import app from "@/utils/axios";
-import { IncomeTable } from "@/components/projectComponents/Tables/IncomeTable";
-import { ExpenceTable } from "@/components/projectComponents/Tables/ExpenceTable";
+import {IncomeTable} from "@/components/projectComponents/Tables/IncomeTable";
+import {ExpenceTable} from "@/components/projectComponents/Tables/ExpenceTable";
 import AddCustomerForm from "@/components/projectComponents/Forms/addCustomerForm";
-import { MyMapComponent } from "@/components/projectComponents/Maps";
 
-
-const indRS = (value: number) => {
-  // Format the amount as a rupi amount
-  const formatted = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-  }).format(value);
-
-  return formatted;
-};
-
-const lat = "23.24965742318646"
-const long = "77.47080411156912"
-
+import {formatted} from "@/utils/formatted";
 
 export default function page() {
   const [first, setfirst] = useState(1);
@@ -57,17 +36,21 @@ export default function page() {
   const services = employee && employee.services;
   const expenses = employee && employee.expenses;
   const tasks = employee && employee.tasks;
- 
- 
+
+  console.log(expenses);
 
   const dispatch = useDispatch();
   const Toast = useToast();
   let totalIncome = 0;
+  let totalExpence = 0;
   employee &&
-    employee.services.map((value: any, index: number) => {
-      totalIncome = totalIncome + +value.rsprice;
+    employee.services.map((value: any) => {
+      totalIncome = totalIncome + +value.totalAmount;
     });
-
+  employee &&
+    employee.expenses.map(
+      (value: any) => (totalExpence = totalExpence + +value.amount)
+    );
   const upDateTask = async (e: any, id: string) => {
     e.preventDefault();
     console.log(id);
@@ -93,6 +76,11 @@ export default function page() {
     dispatch(asynceCurrentEmployee());
   }, [first]);
 
+  const cardData = [
+    {cardtitle: "Income By You", time: "This Month", value: totalIncome},
+    {cardtitle: "Expencsses By You", time: "This Month", value: totalExpence},
+  ];
+
   return (
     <div className="py-5 w-screen h-full justify-center items-center flex">
       <div className="flex flex-col justify-start items-start max-w-[90%] h-full w-full gap-5">
@@ -108,21 +96,20 @@ export default function page() {
                 <CardDescription>{card.time}</CardDescription>
               </CardHeader>
               <CardContent className="text-2xl text-primary font-bold">
-                <p>{indRS(totalIncome)}</p>
+                <p>{formatted(card.value)}</p>
               </CardContent>
             </Card>
           ))}
         </div>
         <div className="flex  flex-wrap lg:flex-row justify-start items-start gap-5 w-full ">
-          
           <AddIncomeForm first={first} setfirst={setfirst} />
           <AddExpencForm />
-          <AddCustomerForm/>
+          <AddCustomerForm />
         </div>
         <div className="flex flex-col lg:flex-row justify-start items-start gap-3 w-full ">
-          
-          <IncomeTable   tableData={services?services:[]} />
-          <ExpenceTable />
+          {/* <Invoice/> */}
+          <IncomeTable tableData={services ? services : []}  setfirst={setfirst} first={first} />
+          <ExpenceTable  />
           {/* <Card className="w-full px-2">
             <CardHeader className="px-2 py-5">
               <CardTitle className="font-bold ">Income Details</CardTitle>
@@ -247,9 +234,7 @@ export default function page() {
               </Card>
             ))}
         </div>
-        
       </div>
-
     </div>
   );
 }

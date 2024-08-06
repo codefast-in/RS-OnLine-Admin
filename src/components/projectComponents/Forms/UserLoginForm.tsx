@@ -12,7 +12,7 @@ import {
 
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
-import {EyeClosedIcon, EyeOpenIcon} from "@radix-ui/react-icons";
+import {EyeClosedIcon, EyeOpenIcon, ReloadIcon} from "@radix-ui/react-icons";
 import {Button} from "@/components/ui/button";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -35,6 +35,7 @@ function UserLoginForm() {
   const router = useRouter();
   const [locationAcc, setLocationAcc] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const changType = () => {
     setVisible(!visible);
   };
@@ -53,10 +54,11 @@ function UserLoginForm() {
     const info = data;
     console.log(info);
     try {
+      setIsLoading(!isLoading);
       dispatch(asyncLoginEmployee(info));
+      setIsLoading(false);
     } catch (error: any) {
       console.log(error);
-
       toast.toast({
         title: "Invalid Email/Password",
       });
@@ -137,7 +139,11 @@ function UserLoginForm() {
       </CardContent>
       <CardFooter className="felx flex-col gap-5">
         <Button className="w-full" onClick={sendData} disabled={locationAcc}>
-          Login
+          {isLoading ? (
+            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Login"
+          )}
         </Button>
         <ResetPassForm user="employee" />
       </CardFooter>

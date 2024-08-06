@@ -7,7 +7,6 @@ import {
   CaretSortIcon,
   ChevronDownIcon,
   DotsHorizontalIcon,
-
 } from "@radix-ui/react-icons";
 import {
   ColumnDef,
@@ -44,7 +43,6 @@ import {
 } from "@/components/ui/table";
 import {ScrollArea} from "@/components/ui/scroll-area";
 
-
 import AddExpencForm from "../Forms/addExpencForm";
 
 const data: Employees[] = [
@@ -53,7 +51,7 @@ const data: Employees[] = [
     type: "Tea",
     empName: "Sachin Pawar",
     date: dayjs().format("DD MMM,YYYY"),
-    status: "paid",   
+    status: "paid",
     amount: 316,
   },
   {
@@ -61,18 +59,19 @@ const data: Employees[] = [
     type: "petrol",
     empName: "Shivam thakur",
     date: dayjs().format("DD MMM,YYYY"),
-    status: "remaining",   
+    status: "remaining",
     amount: 316,
   },
 ];
 
 export type Employees = {
-  id: string;
-  type: string;
-  empName: string; 
+
   date: Date;
-  status: "paid" | "remaining";
   amount: number;
+  employee: string;
+  status: string;
+  title: string;
+  _id: string;
 };
 
 export const columns: ColumnDef<Employees>[] = [
@@ -80,8 +79,7 @@ export const columns: ColumnDef<Employees>[] = [
     id: "select",
     header: "No.",
     cell: ({row}) => {
-     
-      return <div>{row.index +1}</div>;
+      return <div>{row.index + 1}</div>;
     },
     enableSorting: false,
     enableHiding: false,
@@ -102,12 +100,12 @@ export const columns: ColumnDef<Employees>[] = [
     cell: ({row}) => <div className="capitalize">{row.getValue("type")}</div>,
   },
 
-  
-
   {
     accessorKey: "empName",
     header: "Employee Name",
-    cell: ({row}) => <div className="capitalize">{row.getValue("empName")}</div>,
+    cell: ({row}) => (
+      <div className="capitalize">{row.getValue("empName")}</div>
+    ),
   },
   {
     accessorKey: "status",
@@ -122,7 +120,7 @@ export const columns: ColumnDef<Employees>[] = [
           variant="tableHead"
           className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-         Date
+          Date
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -179,8 +177,6 @@ export const columns: ColumnDef<Employees>[] = [
             {/* <DropdownMenuItem>View Employee</DropdownMenuItem> */}
             <DropdownMenuItem>Mark as paid</DropdownMenuItem>
             <DropdownMenuItem>View Expencese details</DropdownMenuItem>
-
-
           </DropdownMenuContent>
         </DropdownMenu>
       );
